@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Formulaire pour la création d'article</title>
+
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body onload="init_article()">
+    <!-- Article creation -->
+    <div id="form">
+      <input id="f_title" type="text" onkeydown="update_title()" onkeyup="update_title()" name="basic_information" placeholder="Titre">
+
+      <input id="f_author" type="text" onkeydown="update_author()" onkeyup="update_author()" name="basic_information" placeholder="Auteur">
+
+      <input id="f_date" type="date" onchange="update_date()" name="basic_information">
+
+      <button type="button" onclick="submit_article()" name="submit_button">Soumettre</button>
+    </div>
+
+    <!-- Article preview -->
+    <div id="article">
+      <div id="a_header">
+        <h1 id="a_title"></h1>
+        <span id="a_date"></span> <span id="a_author"></span>
+      </div>
+
+      <div id="a_content"></div>
+    </div>
+
+    <script src="app.js" charset="utf-8"></script>
+  </body>
+</html>
