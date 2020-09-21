@@ -4,30 +4,45 @@
     <meta charset="utf-8">
     <title>Formulaire pour la création d'article</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link type="text/css" rel="stylesheet" href="style.css">
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pell@1.0.6/dist/pell.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pell@1.0.6/dist/pell.min.js"></script>
   </head>
   <body onload="init_article()">
     <!-- Article creation -->
     <div id="form">
-      <input id="f_title" type="text" onkeydown="update_title()" onkeyup="update_title()" name="basic_information" placeholder="Titre">
+      <input id="f_title" type="text" onfocus="update_title()" onkeydown="update_title()" onkeyup="update_title()" name="core_input" placeholder="Titre">
+      <input id="f_author" type="text" onfocus="update_author()" onkeydown="update_author()" onkeyup="update_author()" name="core_input" placeholder="Auteur">
+      <input id="f_date" type="date" onfocus="update_date()" onchange="update_date()" name="core_input">
 
-      <input id="f_author" type="text" onkeydown="update_author()" onkeyup="update_author()" name="basic_information" placeholder="Auteur">
+      <input id="f_sctn_name" type="text" placeholder="Nom"><input id="f_sctn_rank" type="text" placeholder="Rang">
+      <label for="rank_checkbox">Afficher le rang</label><input id="f_sctn_display_rank" type="checkbox" name="display_rank" checked><button type="button" onclick="add_section()" name="add_section">Ajouter section</button>
+      <select id="f_sctn_lst" onchange="update_modified_section()"></select><button type="button" onclick="remove_section()">Supprimer section</button>
 
-      <input id="f_date" type="date" onchange="update_date()" name="basic_information">
+      <template id="f_mod_section">
+        <textarea id="f_prgrph" rows="12" cols="80"></textarea><button type="button" onclick="add_paragraph()" name="el_button">Ajouter paragraphe</button>
+        <button type="button" onclick="add_subtitle()" name="el_button">Ajouter sous-titre</button>
+        <button type="button" onclick="add_figure()" name="el_button">Ajouter figure</button>
+        <button type="button" onclick="add_quote()" name="el_button">Ajouter citation</button>
+        <button type="button" onclick="add_list()" name="el_button">Ajouter liste</button>
+        <select id="f_el_lst"></select><button onclick="remove_element()" type="button">Supprimer un élément</button>
+      </template>
 
-      <button type="button" onclick="submit_article()" name="submit_button">Soumettre</button>
+      <button type="button" onclick="export_html('article.html')" name="save_button">Exporter <i>html</i></button>
+      <button type="button" onclick="submit_article()" name="save_button">Envoyer serveur</button>
     </div>
 
     <!-- Article preview -->
     <div id="article">
-      <div id="a_header">
-        <h1 id="a_title"></h1>
-        <span id="a_date"></span> <span id="a_author"></span>
-      </div>
-
-      <div id="a_content"></div>
+      <div id="a_header"></div>
+      <div id="a_core"></div>
+      <div id="a_footer"></div>
     </div>
 
-    <script src="app.js" charset="utf-8"></script>
+    <!-- Local scripts -->
+    <script type="text/javascript" src="app.js" charset="utf-8"></script>
+    <script type="text/javascript" src="elements.js" charset="utf-8"></script>
+    <script type="text/javascript" src="dict.js" charset="utf-8"></script>
   </body>
 </html>
