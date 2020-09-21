@@ -4,4 +4,6 @@ var class2name = {
   figure: 'Figure',
   quote: 'Citation',
   list: 'Liste'
-}
+};
+
+var type2tag = {};
