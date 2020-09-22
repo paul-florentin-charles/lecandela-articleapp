@@ -1,0 +1,9 @@
+{
+  "html": {
+    "f_name": "article.html",
+    "ttl_tag": "h1"
+  }
+  "json": {
+    "f_name": "article.json"
+  }
+}

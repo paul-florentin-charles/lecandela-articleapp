@@ -1,50 +1,48 @@
 <!DOCTYPE html>
-<html lang="fr" dir="ltr">
+<html lang="fr">
   <head>
     <meta charset="utf-8">
-    <title>Formulaire pour la création d'article</title>
+    <title>Création d'article</title>
 
-    <link type="text/css" rel="stylesheet" href="style.css">
-    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pell@1.0.6/dist/pell.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pell@1.0.6/dist/pell.min.js"></script>
+    <!-- Local style sheets -->
+    <link type="text/css" rel="stylesheet" href="static/css/style.css">
   </head>
-  <body onload="init_article()">
+  <body>
     <!-- Article creation -->
     <div id="form">
-      <input id="f_title" type="text" onfocus="update_title()" onkeydown="update_title()" onkeyup="update_title()" name="core_input" placeholder="Titre">
-      <input id="f_author" type="text" onfocus="update_author()" onkeydown="update_author()" onkeyup="update_author()" name="core_input" placeholder="Auteur">
-      <input id="f_date" type="date" onfocus="update_date()" onchange="update_date()" name="core_input">
+      <input id="f_title" type="text" onfocus="update_title()" onkeydown="update_title()" onkeyup="update_title()" placeholder="Titre">
+      <input id="f_author" type="text" onfocus="update_author()" onkeydown="update_author()" onkeyup="update_author()" placeholder="Auteur">
+      <input id="f_date" type="date" onfocus="update_date()" onchange="update_date()">
 
       <input id="f_sctn_name" type="text" placeholder="Nom"><input id="f_sctn_rank" type="text" placeholder="Rang">
-      <label for="f_sctn_display_rank">Afficher le rang</label><input id="f_sctn_display_rank" type="checkbox" name="display_rank" checked><button type="button" onclick="add_section()" name="add_section">Ajouter section</button>
+      <label for="f_sctn_display_rank">Afficher le rang</label><input id="f_sctn_display_rank" type="checkbox"><button type="button" onclick="add_section()">Ajouter section</button>
       <select id="f_sctn_lst" onchange="update_modified_section()"></select><button type="button" onclick="remove_section()">Supprimer section</button>
 
       <template id="f_mod_section">
-        <button type="button" onclick="italic()" name="prgrph_edit"><i>I</i></button><button type="button" onclick="bold()" name="prgrph_edit"><b>B</b></button><button type="button" onclick="quote()" name="prgrph_edit"><q></q></button></button><button type="button" onclick="link()" name="prgrph_edit">&#128279;</button>
-        <textarea id="f_prgrph" rows="12" cols="80"></textarea><button type="button" onclick="add_paragraph()" name="el_button">Ajouter paragraphe</button>
-        <input id="f_sbttl" type="text" placeholder="Sous-titre"><button type="button" onclick="add_subtitle()" name="el_button">Ajouter sous-titre</button>
-        <input id="f_img" type="file" placeholder="Choisir image"><input id="f_caption" type="text" placeholder="Légende"><button type="button" onclick="add_figure()" name="el_button">Ajouter figure</button>
-        <input id="f_qte" type="text" placeholder="Citation"><button type="button" onclick="add_quote()" name="el_button">Ajouter citation</button>
-        <label for="f_ol">Liste numérotée</label><input id="f_ol" type="checkbox"><input id="f_ol_el" type="text" placeholder="Éléments"><button type="button" onclick="add_list()" name="el_button">Ajouter liste</button>
+        <button type="button" onclick="italic()"><i>I</i></button><button type="button" onclick="bold()"><b>B</b></button><button type="button" onclick="quote()"><q></q></button></button><button type="button" onclick="link()">&#128279;</button>
+        <textarea id="f_prgrph" rows="12" cols="80"></textarea><button type="button" onclick="add_paragraph()">Ajouter paragraphe</button>
+        <input id="f_sbttl" type="text" placeholder="Sous-titre"><button type="button" onclick="add_subtitle()">Ajouter sous-titre</button>
+        <input id="f_img" type="file" placeholder="Choisir image"><input id="f_caption" type="text" placeholder="Légende"><button type="button" onclick="add_figure()">Ajouter figure</button>
+        <input id="f_qte" type="text" placeholder="Citation"><button type="button" onclick="add_quote()">Ajouter citation</button>
+        <label for="f_ol">Liste numérotée</label><input id="f_ol" type="checkbox"><input id="f_ol_el" type="text" placeholder="Éléments"><button type="button" onclick="add_list()">Ajouter liste</button>
         <select id="f_el_lst"></select><button onclick="copy_element()" type="button">Copier un élément</button><button onclick="remove_element()" type="button">Supprimer un élément</button>
       </template>
 
-      <button type="button" onclick="export_html('article.html')" name="save_button">Exporter <i>html</i></button>
-      <button type="button" onclick="submit_article()" name="save_button">Envoyer serveur</button>
+      <!-- Export buttons -->
+      <button type="button" onclick="export_html()">Exporter au format <i>html</i></button>
+      <button type="button" onclick="export_json()">Exporter au format <b>JSON</b></button>
     </div>
 
     <!-- Article preview -->
-    <div id="article">
-      <div id="a_header"></div>
-      <div id="a_core"></div>
-      <div id="a_footer"></div>
-    </div>
+    <div id="article"></div>
 
+    <!-- External scripts -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js"></script>
     <!-- Local scripts -->
-    <script type="text/javascript" src="app.js" charset="utf-8"></script>
-    <script type="text/javascript" src="elements.js" charset="utf-8"></script>
-    <script type="text/javascript" src="dict.js" charset="utf-8"></script>
-    <script type="text/javascript" src="edit.js" charset="utf-8"></script>
+    <script type="text/javascript" src="scripts/app.js"></script>
+    <script type="text/javascript" src="scripts/init.js"></script>
+    <script type="text/javascript" src="scripts/elements.js"></script>
+    <script type="text/javascript" src="scripts/dict.js"></script>
+    <script type="text/javascript" src="scripts/edit.js"></script>
   </body>
 </html>

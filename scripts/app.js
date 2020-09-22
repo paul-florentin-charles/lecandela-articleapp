@@ -1,49 +1,26 @@
-// For debugging purpose
-var form = document.getElementById('form');
-var article = document.getElementById('article');
+// Export JSON
+function export_json() {
+  var raw_html = document.getElementById('article').innerHTML;
+  var title = document.getElementById('f_title').value;
+  var author = document.getElementById('f_author').value;
+  var date = date_UStoEU(document.getElementById('f_date').value);
 
-// Submit article
-function submit_article() {
-  var article_raw_html = document.getElementById('article').outerHTML;
-  // TODO: Send a JSON with raw HTML, title, author (optional) and date
+  var json_str = {
+    "title": title,
+    "author": author,
+    "date": date,
+    "content": raw_html
+  };
+
+  var json_file = new Blob([JSON.stringify(json_str)], {type: "text/plain;charset=utf-8"});
+  saveAs(json_file, 'article.json');
 }
 
 // Export html
-function export_html(name) {
-  var article_raw_html = document.getElementById('article').outerHTML;
+function export_html() {
+  var article_raw_html = document.getElementById('article').innerHTML;
   var html_file = new Blob([article_raw_html], {type: "text/plain;charset=utf-8"});
-  saveAs(html_file, name);
-}
-
-function init_article() {
-  // Confirm reloading not to lose form data unpurposely
-  window.onbeforeunload = function() {
-      return "Confirm leaving/refreshing, not to lose form data";
-    }
-
-  // Header init
-  var header = document.getElementById('a_header');
-  var title = document.createElement('h1');
-  title.id = 'a_title';
-  header.appendChild(title);
-
-  // Footer init
-  var footer = document.getElementById('a_footer');
-  var author = document.createElement('span');
-  author.id = 'a_author';
-  var date = document.createElement('span');
-  date.id = 'a_date';
-  footer.appendChild(document.createTextNode("Par "));
-  footer.appendChild(author);
-  footer.appendChild(document.createTextNode(", le "));
-  footer.appendChild(date);
-
-  // Flushing basic informations (title, author and date)
-  document.getElementById('f_title').value = "";
-  document.getElementById('f_author').value = "";
-  document.getElementById('f_date').value = "";
-  // Rechecking boxes
-  document.getElementById('f_sctn_display_rank').checked = true;
+  saveAs(html_file, 'article.html');
 }
 
 function update_title() {
@@ -58,13 +35,14 @@ function update_author() {
 
 function update_date() {
   var date = document.getElementById('f_date').value;
-  var date_obj = new Date(date);
-  if (date_obj.toDateString() != "Invalid Date") {
-    date = date_obj.getDate() + "." + (date_obj.getMonth() + 1) + "." + date_obj.getFullYear();
-    document.getElementById('a_date').innerHTML = date;
-  } else {
-    document.getElementById('a_date').innerHTML = "";
-  }
+  document.getElementById('a_date').innerHTML = date_UStoEU(date);
+}
+
+function date_UStoEU(date_US) {
+  var date = new Date(date_US);
+  if (date.toDateString() == "Invalid Date") return "";
+
+  return date_EU = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
 }
 
 function add_section() {
