@@ -1,6 +1,6 @@
 # *Le Candela* : article creation tool
 
-Small webapp to write articles and exporting them in html format. You can then use *CSS* stylesheets and *JS* scripts upon these html files to integrate them to a blog for instance.
+Small webapp to write articles and exporting them in html format. You can then use *CSS* stylesheets and *JS* scripts upon these html files to integrate them to a blog for instance. Currently written for french users, but will perhaps make an english version.
 
 ## Run
 

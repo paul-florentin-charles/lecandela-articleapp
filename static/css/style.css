@@ -18,3 +18,15 @@
 #f_el {
   display: none;
 }
+
+figure img {
+  height: 420px;
+  width: 75%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+figure figcaption {
+  text-align: center;
+}

@@ -213,7 +213,7 @@ export function add_paragraph() {
   var textarea = document.getElementById('f_el_par');
   var content = textarea.value.trim();
   if (!content) {
-    alert("Text area for paragraph is empty, please fill it.")
+    alert("Text area for paragraph is empty, please fill it.");
     return 0;
   }
 
@@ -248,7 +248,7 @@ export function add_subtitle() {
   var input = document.getElementById('f_el_subttl');
   var content = input.value.trim();
   if (!content) {
-    alert("Input for subtitle is empty, please fill it.")
+    alert("Input for subtitle is empty, please fill it.");
     return 0;
   }
 
@@ -274,8 +274,61 @@ function _add_subtitle(content, s_id) {
 }
 
 export function add_figure() {
-  // For img, parse config.json to get 'img_path', then add document.getElementById('f_el_img').files[0].name
-  // For caption : easy, same as quote or subtitle
+  // Get id of selected section
+  var lst = document.getElementById('f_sctn_lst');
+  var idx = lst.selectedIndex;
+  var s_id = lst.children[idx].value;
+
+  // Get file in file input
+  var file = document.getElementById('f_el_img');
+  var img_file = file.files[0];
+  if (!img_file) {
+    alert("No file has been uploaded yet, upload one please.");
+    return 0;
+  }
+
+  // Get caption in input
+  var input = document.getElementById('f_el_caption');
+  var caption = input.value.trim();
+  if (!caption) {
+    alert("Input for caption is empty, please fill it.")
+    return 0;
+  }
+
+  // Clear file and text inputs
+  file.files = null;
+  file.value = null;
+  input.value = null;
+
+  _add_figure(img_file.name, caption, s_id);
+}
+
+function _add_figure(img_name, caption, s_id) {
+  var section = document.getElementById(s_id);
+  // Create needed tags
+  var figure = document.createElement('figure');
+  var img = document.createElement('img');
+  var fig_cap = document.createElement('figcaption')
+
+  // Set up tag properties
+  img.src = "/local/img/" + img_name; // Parse JSON to get path
+  img.alt = "There should be this image here: " + img_name;
+
+  fig_cap.innerHTML = caption;
+
+  var id = Math.random();
+  while (document.getElementById(id)) id = Math.random();
+  figure.id = id;
+
+  figure.setAttribute('class', 'figure');
+
+  // Append tags
+  figure.appendChild(img);
+  figure.appendChild(fig_cap);
+  section.appendChild(figure);
+
+  // Update list of elements
+  update_element(s_id);
 }
 
 export function add_quote() {
@@ -288,7 +341,7 @@ export function add_quote() {
   var input = document.getElementById('f_el_quote');
   var content = input.value.trim();
   if (!content) {
-    alert("Input for quote is empty, please fill it.")
+    alert("Input for quote is empty, please fill it.");
     return 0;
   }
 
