@@ -2,47 +2,49 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8">
-    <title>Création d'article</title>
+    <title>Outil de création d'article</title>
 
     <!-- Local style sheets -->
     <link type="text/css" rel="stylesheet" href="static/css/style.css">
+
+    <!-- Scripts -->
+    <!-- External scripts -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js" defer="true"></script>
+    <!-- Local scripts -->
+    <script type="module" src="scripts/events.js" defer="true"></script>
   </head>
   <body>
     <!-- Article creation -->
     <div id="form">
-      <input id="f_title" type="text" onfocus="update_title()" onkeydown="update_title()" onkeyup="update_title()" placeholder="Titre">
-      <input id="f_author" type="text" onfocus="update_author()" onkeydown="update_author()" onkeyup="update_author()" placeholder="Auteur">
-      <input id="f_date" type="date" onfocus="update_date()" onchange="update_date()">
+      <!-- Basic information -->
+      <input id="f_title" type="text" placeholder="Titre">
+      <input id="f_author" type="text" placeholder="Auteur">
+      <input id="f_date" type="date">
 
-      <input id="f_sctn_name" type="text" placeholder="Nom"><input id="f_sctn_rank" type="text" placeholder="Rang">
-      <label for="f_sctn_display_rank">Afficher le rang</label><input id="f_sctn_display_rank" type="checkbox"><button type="button" onclick="add_section()">Ajouter section</button>
-      <select id="f_sctn_lst" onchange="update_modified_section()"></select><button type="button" onclick="remove_section()">Supprimer section</button>
+      <!-- Section manager -->
+      <div id="f_sctn">
+        <input id="f_sctn_name" type="text" placeholder="Nom"><input id="f_sctn_nbr" type="text" placeholder="Numéro">
+        <label for="f_sctn_show_nbr">Afficher le numéro</label><input id="f_sctn_show_nbr" type="checkbox"><button id="f_sctn_add" type="button">Ajouter une section</button>
+        <select id="f_sctn_lst"></select><button id="f_sctn_rm" type="button">Supprimer la section</button>
+      </div>
 
-      <template id="f_mod_section">
-        <button type="button" onclick="italic()"><i>I</i></button><button type="button" onclick="bold()"><b>B</b></button><button type="button" onclick="quote()"><q></q></button></button><button type="button" onclick="link()">&#128279;</button>
-        <textarea id="f_prgrph" rows="12" cols="80"></textarea><button type="button" onclick="add_paragraph()">Ajouter paragraphe</button>
-        <input id="f_sbttl" type="text" placeholder="Sous-titre"><button type="button" onclick="add_subtitle()">Ajouter sous-titre</button>
-        <input id="f_img" type="file" placeholder="Choisir image"><input id="f_caption" type="text" placeholder="Légende"><button type="button" onclick="add_figure()">Ajouter figure</button>
-        <input id="f_qte" type="text" placeholder="Citation"><button type="button" onclick="add_quote()">Ajouter citation</button>
-        <label for="f_ol">Liste numérotée</label><input id="f_ol" type="checkbox"><input id="f_ol_el" type="text" placeholder="Éléments"><button type="button" onclick="add_list()">Ajouter liste</button>
-        <select id="f_el_lst"></select><button onclick="copy_element()" type="button">Copier un élément</button><button onclick="remove_element()" type="button">Supprimer un élément</button>
-      </template>
+      <!-- Element manager (i.e. the content of a section) -->
+      <div id="f_el">
+        <button id="f_el_par_it" type="button"><i>I</i></button><button id="f_el_par_bold" type="button"><b>B</b></button><button id="f_el_par_quote" type="button"><q></q></button><button id="f_el_par_link" type="button">&#128279;</button>
+        <textarea id="f_el_par"></textarea>
+        <button id="f_el_add_par" type="button">Ajouter un paragraphe</button>
+        <input id="f_el_subttl" type="text" placeholder="Sous-titre"><button id="f_el_add_subttl" type="button">Ajouter un sous-titre</button>
+        <input id="f_el_img" type="file"><input id="f_el_caption" type="text" placeholder="Légende"><button id="f_el_add_fig" type="button">Ajouter une figure</button>
+        <input id="f_el_quote" type="text" placeholder="Citation"><button id="f_el_add_quote" type="button">Ajouter une citation</button>
+        <select id="f_el_lst"></select><button id="f_el_mod_element" type="button">Modifier l'élément</button><button id="f_el_rm_element" type="button">Supprimer l'élément</button>
+      </div>
 
-      <!-- Export buttons -->
-      <button type="button" onclick="export_html()">Exporter au format <i>html</i></button>
-      <button type="button" onclick="export_json()">Exporter au format <b>JSON</b></button>
+      <!-- Export -->
+      <button id="f_save_html" type="button">Exporter au format <i>html</i></button>
+      <button id="f_save_json" type="button">Exporter au format <b>JSON</b></button>
     </div>
 
     <!-- Article preview -->
     <div id="article"></div>
-
-    <!-- External scripts -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js"></script>
-    <!-- Local scripts -->
-    <script type="text/javascript" src="scripts/app.js"></script>
-    <script type="text/javascript" src="scripts/init.js"></script>
-    <script type="text/javascript" src="scripts/elements.js"></script>
-    <script type="text/javascript" src="scripts/dict.js"></script>
-    <script type="text/javascript" src="scripts/edit.js"></script>
   </body>
 </html>
