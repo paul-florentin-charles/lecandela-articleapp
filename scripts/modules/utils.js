@@ -14,18 +14,23 @@ export function save_file(content_str, name) {
 }
 
 export function get_children(element, skip = 0) {
-  var kids = element.children;
-  if (kids.length <= skip) return [];
-
+  var children = element.children;
   var elements = [];
-  for (var i = skip; i < kids.length; i++) {
-    elements[i-skip] = kids[i];
-  }
+
+  if (children.length <= skip) return elements;
+  for (var i = skip; i < children.length; i++) elements[i-skip] = children[i];
 
   return elements;
 }
 
-/* Styling tools for text fields (text_field, input type="text") */
+export function unused_id() {
+  var id = Math.random();
+  while (document.getElementById(id)) id = Math.random();
+
+  return id;
+}
+
+/* Styling tools for text fields (textarea, input type="text") */
 
 export function add_italic(text_field) {
   var select_pos = text_field.selectionStart + 3;
@@ -50,9 +55,14 @@ export function add_quote(text_field) {
 
 export function add_link(text_field) {
   var select_pos = text_field.selectionStart + 9;
-  text_field.value = text_field.value.slice(0, text_field.selectionStart) + '<a href=""></a>' + text_field.value.slice(text_field.selectionEnd, text_field.value.length);
+  text_field.value = text_field.value.slice(0, text_field.selectionStart) + '<a href="" target="_blank"></a>' + text_field.value.slice(text_field.selectionEnd, text_field.value.length);
   text_field.focus();
   text_field.selectionEnd = select_pos;
+}
+
+export function add_ref(text_field) {
+  console.log("TODO: add_ref")
+  // TODO:
 }
 
 /* Dictionaries */

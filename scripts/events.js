@@ -41,6 +41,7 @@ document.getElementById('f_el_par_it').onclick = function() { __api.add_italic_t
 document.getElementById('f_el_par_bold').onclick = function() { __api.add_bold_to_textarea(); };
 document.getElementById('f_el_par_quote').onclick = function() { __api.add_quote_to_textarea(); };
 document.getElementById('f_el_par_link').onclick = function() { __api.add_link_to_textarea(); };
+document.getElementById('f_el_par_ref').onclick = function() { __api.add_ref_to_textarea(); };
 // Trigger button used to add paragraph, on click
 document.getElementById('f_el_add_par').onclick = function() { __api.add_paragraph(); };
 

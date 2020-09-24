@@ -1,0 +1,19 @@
+#form {
+  float: left;
+  width: 50%;
+  white-space: pre-line;
+}
+
+#form * {
+  margin-bottom: 10px;
+  margin-right: 5px;
+}
+
+#f_el {
+  display: none;
+}
+
+textarea {
+  width: 70%;
+  height: 200px;
+}

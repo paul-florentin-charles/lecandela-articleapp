@@ -1,99 +1,25 @@
 import * as __utils from './utils.js';
 import * as __init from './init.js';
+import * as __form from './form.js';
+import * as __art from './article.js';
+import * as __cfg from './config.js';
+import * as __upd from './update.js';
 
-/**************
-*** INITS ***
-**************/
+/*** INIT ***/
 
-export function init() {
-  __init.init_article();
-  __init.init_form();
-}
+export function init() { __init.init_document(); }
 
-/**************
-**** SAVES ****
-**************/
+/*** UPDATES ***/
 
-// Export to JSON
-export function export_json() {
-  var raw_html = document.getElementById('article').innerHTML;
-  var title = document.getElementById('f_title').value;
-  var author = document.getElementById('f_author').value;
-  var date = __utils.date_US_to_EU(document.getElementById('f_date').value);
+export function update_title() { __art.set_title(__form.get_title()); }
 
-  var json_data = {
-    "title": title,
-    "author": author,
-    "date": date,
-    "content": raw_html
-  };
+export function update_author() { __art.set_author(__form.get_author()); }
 
-  __utils.save_file(JSON.stringify(json_data), 'article.json');
-}
+export function update_date() { __art.set_date(__form.get_date()); }
 
-// Export to html
-export function export_html() {
-  __utils.save_file(document.getElementById('article').innerHTML, 'article.html');
-}
+export function update_section() { __upd.update_section(); }
 
-/**************
-*** UPDATES ***
-**************/
-
-/*** INPUTS ***/
-
-export function update_title() {
-  var title = document.getElementById('f_title').value.trim();
-  document.getElementById('a_title').innerHTML = title;
-}
-
-export function update_author() {
-  var author = document.getElementById('f_author').value.trim();
-  document.getElementById('a_author').innerHTML = author;
-}
-
-export function update_date() {
-  var date = document.getElementById('f_date').value.trim();
-  document.getElementById('a_date').innerHTML = __utils.date_US_to_EU(date);
-}
-
-/*** LISTS ***/
-
-export function update_section() {
-  var lst = document.getElementById('f_sctn_lst');
-  var idx = lst.selectedIndex;
-
-  if (idx == -1) {
-    // Hiding element manager
-    document.getElementById('f_el').style.display = 'none';
-    return 0;
-  }
-  // Showing element manager
-  document.getElementById('f_el').style.display = 'block';
-
-  var s_id = lst.children[idx].value;
-  update_element(s_id); // Update list of elements
-}
-
-function update_element(s_id) {
-  // Get list of elements of section 's_id' apart from the first one
-  var elements = __utils.get_children(document.getElementById(s_id), 1);
-  var el_lst = document.getElementById("f_el_lst");
-  // Purge element list
-  el_lst.length = 0;
-  var i = 1;
-  for (var element of elements) {
-    var option = document.createElement('option');
-    option.value = element.id;
-    option.innerHTML = i + ". " + __utils.class2name[element.getAttribute('class')];
-    el_lst.appendChild(option);
-    i++;
-  }
-}
-
-/***************
-** ADD/REMOVE **
-***************/
+/*** ADD/REMOVE ***/
 
 export function add_section() {
   var name = document.getElementById('f_sctn_name').value;
@@ -104,69 +30,25 @@ export function add_section() {
     return 0;
   }
 
-  var show_nbr = document.getElementById('f_sctn_show_nbr').checked;
-
-  if (_add_section(nbr, name, show_nbr)) {
-    // Flushing values
-    document.getElementById('f_sctn_name').value = null;
-    document.getElementById('f_sctn_nbr').value = null;
-  }
-}
-
-function _add_section(nbr, name, show_nbr=true) {
   if (isNaN(nbr) || nbr < 0) {
     alert('Section number must be a positive number');
     return 0;
   }
-  var s_id = 's_' + nbr;
-  if (document.getElementById(s_id)) {
+
+  var section_id = 's_' + nbr;
+  if (document.getElementById(section_id)) {
     alert('There is already a section ' + nbr);
     return 0;
   }
 
-  var core = document.getElementById('a_core');
-  var section = document.createElement('div');
-  section.setAttribute('class', 'a_section');
-  section.id = s_id;
+  var show_nbr = document.getElementById('f_sctn_show_nbr').checked;
+  __art.add_section(section_id, (show_nbr ? nbr + '- ' : '') + name);
 
-  if (show_nbr) name = nbr + ' - ' + name;
+  // Flushing input fields
+  document.getElementById('f_sctn_name').value = null;
+  document.getElementById('f_sctn_nbr').value = null;
 
-  var title = document.createElement('h2');
-  title.setAttribute('class', 's_title');
-  title.innerHTML = name;
-  section.appendChild(title);
-
-  // Adding section to section list (<select> tag)
-  var lst = document.getElementById('f_sctn_lst');
-
-  var option = document.createElement('option');
-  option.value = s_id;
-  option.innerHTML = name;
-
-  var inserted = false;
-  for (var opt of lst.children) {
-    if (parseInt(opt.value.slice(2, opt.value.length)) > parseInt(option.value.slice(2, option.value.length))) {
-      lst.insertBefore(option, opt); // Insert before higher rank option
-      inserted = true;
-      break;
-    }
-  }
-  if (!inserted) lst.appendChild(option);
-
-  // Adding section to core of article
-  inserted = false;
-  for (var sctn of core.children) {
-    if (parseInt(sctn.id.slice(2, sctn.id.length)) > parseInt(section.id.slice(2, section.id.length))) {
-      core.insertBefore(section, sctn); // Insert before higher number section
-      inserted = true;
-      break;
-    }
-  }
-  if (!inserted) core.appendChild(section);
-
-  // Updating modified section, only if list was empty (i.e. has one element now)
-  if (lst.children.length == 1) update_section();
-  return 1;
+  update_section(); // Updating modified section
 }
 
 export function remove_section() {
@@ -180,115 +62,56 @@ export function remove_section() {
 
   if (!confirm("This cannot be undone, are you sure ?")) return 0;
 
+  __art.remove_section(__form.get_section_id());
 
-  var s_id = lst.children[idx].value;
-  _remove_section(s_id);
+  lst.removeChild(lst.children[idx]); // Removing section from section list
+  if (lst.children[idx-1]) lst.children[idx-1].selected = true; // Selecting previous item, if there is one
 
-  // Removing section from section list (<select> tag)
-  lst.removeChild(lst.children[idx]);
-  // Selecting previous item, if there is one
-  if (lst.children[idx-1]) lst.children[idx-1].selected = true;
-
-  // Updating modified section
-  update_section();
+  update_section(); // Updating modified section
 }
 
-function _remove_section(s_id) {
-  var section = document.getElementById(s_id), core = document.getElementById('a_core');
-  // Removing section from core of article
-  core.removeChild(section);
-}
-
-/***************
-*** ELEMENTS ***
-***************/
+/*** ELEMENTS ***/
 
 export function add_paragraph() {
-  // Get id of selected section
-  var lst = document.getElementById('f_sctn_lst');
-  var idx = lst.selectedIndex;
-  var s_id = lst.children[idx].value;
+  var textarea = document.getElementById('f_el_par'); // Get content of textarea
 
-  // Get content of textarea input
-  var textarea = document.getElementById('f_el_par');
   var content = textarea.value.trim();
   if (!content) {
     alert("Text area for paragraph is empty, please fill it.");
     return 0;
   }
+  textarea.value = null; // Clear textarea content
 
-  // Clear textarea content
-  textarea.value = null;
-
-  _add_paragraph(content, s_id);
-}
-
-function _add_paragraph(content, s_id) {
-  var section = document.getElementById(s_id);
-  var paragraph = document.createElement('p');
-  paragraph.innerHTML = content;
-
-  var id = Math.random();
-  while (document.getElementById(id)) id = Math.random();
-  paragraph.id = id;
-
-  paragraph.setAttribute('class', 'paragraph');
-  section.appendChild(paragraph);
-
-  update_element(s_id);
+  __art.add_paragraph(content, __form.get_section_id()); // Add paragraph to article
+  __upd.update_element(); // Update list of elements
 }
 
 export function add_subtitle() {
-  // Get id of selected section
-  var lst = document.getElementById('f_sctn_lst');
-  var idx = lst.selectedIndex;
-  var s_id = lst.children[idx].value;
+  var input = document.getElementById('f_el_subttl'); // Get content of text input
 
-  // Get content of input
-  var input = document.getElementById('f_el_subttl');
   var content = input.value.trim();
   if (!content) {
     alert("Input for subtitle is empty, please fill it.");
     return 0;
   }
+  input.value = null; // Clear input content
 
-  // Clear input content
-  input.value = null;
-
-  _add_subtitle(content, s_id);
-}
-
-function _add_subtitle(content, s_id) {
-  var section = document.getElementById(s_id);
-  var subtitle = document.createElement('h3');
-  subtitle.innerHTML = content;
-
-  var id = Math.random();
-  while (document.getElementById(id)) id = Math.random();
-  subtitle.id = id;
-
-  subtitle.setAttribute('class', 'subtitle');
-  section.appendChild(subtitle);
-
-  update_element(s_id);
+  __art.add_subtitle(content, __form.get_section_id()); // Add subtitle to article
+  __upd.update_element(); // Update list of elements
 }
 
 export function add_figure() {
-  // Get id of selected section
-  var lst = document.getElementById('f_sctn_lst');
-  var idx = lst.selectedIndex;
-  var s_id = lst.children[idx].value;
-
   // Get file in file input
   var file = document.getElementById('f_el_img');
   var img_file = file.files[0];
+
   if (!img_file) {
     alert("No file has been uploaded yet, upload one please.");
     return 0;
   }
 
-  // Get caption in input
-  var input = document.getElementById('f_el_caption');
+  var input = document.getElementById('f_el_caption'); // Get content of text input
+
   var caption = input.value.trim();
   if (!caption) {
     alert("Input for caption is empty, please fill it.")
@@ -296,74 +119,25 @@ export function add_figure() {
   }
 
   // Clear file and text inputs
-  file.files = null;
   file.value = null;
   input.value = null;
 
-  _add_figure(img_file.name, caption, s_id);
-}
-
-function _add_figure(img_name, caption, s_id) {
-  var section = document.getElementById(s_id);
-  // Create needed tags
-  var figure = document.createElement('figure');
-  var img = document.createElement('img');
-  var fig_cap = document.createElement('figcaption')
-
-  // Set up tag properties
-  img.src = "/local/img/" + img_name; // Parse JSON to get path
-  img.alt = "There should be this image here: " + img_name;
-
-  fig_cap.innerHTML = caption;
-
-  var id = Math.random();
-  while (document.getElementById(id)) id = Math.random();
-  figure.id = id;
-
-  figure.setAttribute('class', 'figure');
-
-  // Append tags
-  figure.appendChild(img);
-  figure.appendChild(fig_cap);
-  section.appendChild(figure);
-
-  // Update list of elements
-  update_element(s_id);
+  __art.add_figure(img_file.name, caption, __form.get_section_id()); // Add figure to article
+  __upd.update_element(); // Update list of elements
 }
 
 export function add_quote() {
-  // Get id of selected section
-  var lst = document.getElementById('f_sctn_lst');
-  var idx = lst.selectedIndex;
-  var s_id = lst.children[idx].value;
+  var input = document.getElementById('f_el_quote'); // Get content of input
 
-  // Get content of input
-  var input = document.getElementById('f_el_quote');
   var content = input.value.trim();
   if (!content) {
     alert("Input for quote is empty, please fill it.");
     return 0;
   }
+  input.value = null; // Clear input content
 
-  // Clear input content
-  input.value = null;
-
-  _add_quote(content, s_id);
-}
-
-function _add_quote(content, s_id) {
-  var section = document.getElementById(s_id);
-  var quote = document.createElement('blockquote');
-  quote.innerHTML = content;
-
-  var id = Math.random();
-  while (document.getElementById(id)) id = Math.random();
-  quote.id = id;
-
-  quote.setAttribute('class', 'quote');
-  section.appendChild(quote);
-
-  update_element(s_id);
+  __art.add_quote(content, __form.get_section_id()); // Add quote to article
+  __upd.update_element(); // Update list of elements
 }
 
 export function remove_element() {
@@ -379,24 +153,8 @@ export function remove_element() {
     return 0;
   }
 
-  _remove_element(lst, idx);
-}
-
-function _remove_element(lst, idx) {
-  var el_id = lst.children[idx].value;
-
-  // Removing element from list
-  lst.removeChild(lst.children[idx]);
-
-  // Removing element from article
-  document.getElementById(el_id).remove();
-
-  // Updating list of elements
-  var lst = document.getElementById('f_sctn_lst');
-  var idx = lst.selectedIndex;
-  var s_id = lst.children[idx].value;
-
-  update_element(s_id);
+  __art.remove_element(lst, idx);
+  __upd.update_element(); // Update list of elements
 }
 
 export function modify_element() {
@@ -404,22 +162,31 @@ export function modify_element() {
   // TODO:
 }
 
-/**************
-**** UTILS ****
-**************/
+/*** SAVES ***/
 
-export function add_italic_to_textarea() {
-  __utils.add_italic(document.getElementById('f_el_par'));
+export function export_json() {
+  var json_data = {
+    "title": __form.get_title(),
+    "author": __form.get_author(),
+    "date": __form.get_date(),
+    "content": __art.get_article()
+  };
+
+  __utils.save_file(JSON.stringify(json_data), __cfg.get_json_fname());
 }
 
-export function add_bold_to_textarea() {
-  __utils.add_bold(document.getElementById('f_el_par'));
+export function export_html() {
+  __utils.save_file(document.getElementById('article').innerHTML, __cfg.get_html_fname());
 }
 
-export function add_quote_to_textarea() {
-  __utils.add_quote(document.getElementById('f_el_par'));
-}
+/*** UTILS ***/
 
-export function add_link_to_textarea() {
-  __utils.add_link(document.getElementById('f_el_par'));
-}
+export function add_italic_to_textarea() { __utils.add_italic(document.getElementById('f_el_par')); }
+
+export function add_bold_to_textarea() { __utils.add_bold(document.getElementById('f_el_par')); }
+
+export function add_quote_to_textarea() { __utils.add_quote(document.getElementById('f_el_par')); }
+
+export function add_link_to_textarea() { __utils.add_link(document.getElementById('f_el_par')); }
+
+export function add_ref_to_textarea() { __utils.add_ref(document.getElementById('f_el_par')); }
