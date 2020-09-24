@@ -5,6 +5,7 @@
     <title>Outil de création d'article</title>
 
     <!-- Local style sheets -->
+    <link type="text/css" rel="stylesheet" href="static/css/main.css">
     <link type="text/css" rel="stylesheet" href="static/css/form.css">
     <link type="text/css" rel="stylesheet" href="static/css/article.css">
 
@@ -17,32 +18,41 @@
   <body>
     <!-- Article creation -->
     <div id="form">
+      <h2>Formulaire pour l'écriture d'article</h2>
       <!-- Basic information -->
-      <input id="f_title" type="text" placeholder="Titre">
-      <input id="f_author" type="text" placeholder="Auteur">
-      <input id="f_date" type="date">
+      <div id="f_header">
+        <h3>Informations élémentaires</h3>
+        <input id="f_title" type="text" placeholder="Titre">
+        <input id="f_author" type="text" placeholder="Auteur">
+        <input id="f_date" type="date">
+      </div>
 
       <!-- Section manager -->
       <div id="f_sctn">
-        <input id="f_sctn_name" type="text" placeholder="Nom"><input id="f_sctn_nbr" type="text" placeholder="Numéro">
+        <h3>Gestionnaire des sections</h3>
+        <input id="f_sctn_nbr" type="number" min="0" placeholder="Numéro"><input id="f_sctn_name" type="text" placeholder="Nom">
         <label for="f_sctn_show_nbr">Afficher le numéro</label><input id="f_sctn_show_nbr" type="checkbox"><button id="f_sctn_add" type="button">Ajouter une section</button>
         <select id="f_sctn_lst"></select><button id="f_sctn_rm" type="button">Supprimer la section</button>
       </div>
 
       <!-- Element manager (i.e. the content of a section) -->
       <div id="f_el">
-        <button id="f_el_par_it" type="button"><i>I</i></button><button id="f_el_par_bold" type="button"><b>B</b></button><button id="f_el_par_quote" type="button"><q></q></button><button id="f_el_par_link" type="button">&#128279;</button><button id="f_el_par_ref" type="button">ref<sup>{1}</sup></button>
-        <textarea id="f_el_par"></textarea>
+        <h3>Gestionnaire des éléments de section</h3>
+        <button id="f_el_par_it" type="button"><i>I</i></button><button id="f_el_par_bold" type="button"><b>B</b></button><button id="f_el_par_quote" type="button"><q></q></button><button id="f_el_par_link" type="button">&#128279;</button><button id="f_el_par_ref" type="button">ref<sup>1</sup></button>
+        <textarea id="f_el_par" placeholder="Paragraphe"></textarea>
         <button id="f_el_add_par" type="button">Ajouter un paragraphe</button>
         <input id="f_el_subttl" type="text" placeholder="Sous-titre"><button id="f_el_add_subttl" type="button">Ajouter un sous-titre</button>
-        <input id="f_el_img" type="file"><input id="f_el_caption" type="text" placeholder="Légende"><button id="f_el_add_fig" type="button">Ajouter une figure</button>
+        <input id="f_el_caption" type="text" placeholder="Légende"><label for="f_el_img">Déposer une image</label><input id="f_el_img" type="file"><button id="f_el_add_fig" type="button">Ajouter une figure</button>
         <input id="f_el_quote" type="text" placeholder="Citation"><button id="f_el_add_quote" type="button">Ajouter une citation</button>
         <select id="f_el_lst"></select><button id="f_el_mod_element" type="button">Modifier l'élément</button><button id="f_el_rm_element" type="button">Supprimer l'élément</button>
       </div>
 
       <!-- Export -->
-      <button id="f_save_html" type="button">Exporter au format <i>html</i></button>
-      <button id="f_save_json" type="button">Exporter au format <b>JSON</b></button>
+      <div id="f_save">
+        <h3>Sauvegarder l'article</h3>
+        <button id="f_save_html" type="button">Exporter au format <i>html</i></button>
+        <button id="f_save_json" type="button">Exporter au format <b>JSON</b></button>
+      </div>
     </div>
 
     <!-- Article preview -->

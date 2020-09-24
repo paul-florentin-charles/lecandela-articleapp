@@ -1,7 +1,20 @@
 #article {
+  margin-left: 1%;
+  padding-left: 1%;
   float: left;
-  width: 50%;
+  width: 48%;
   white-space: pre-line;
+  border-style: dashed;
+  border-width: medium;
+  border-radius: 2px;
+}
+
+.subtitle {
+  text-align: left;
+}
+
+.paragraph {
+  text-indent: 15px;
 }
 
 figure img {

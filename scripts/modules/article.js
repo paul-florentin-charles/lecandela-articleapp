@@ -64,13 +64,27 @@ export function add_section(section_id, name) {
 
 export function remove_element(el_lst, el_idx) { document.getElementById(el_lst.children[el_idx].value).remove(); }
 
+export function highlight_element(el_lst) {
+  // Unhighlight all
+  for (var el of el_lst.children) {
+    document.getElementById(el.value).style.color = 'black';
+  }
+
+  var selected_idx = el_lst.selectedIndex;
+  if (selected_idx != -1) {
+    var selected_option = el_lst.children[selected_idx];
+    var element_id = selected_option.value;
+    document.getElementById(element_id).style.color = '#bbcc44fc';
+  }
+}
+
 export function add_paragraph(content, section_id) {
   var section = document.getElementById(section_id);
 
   var paragraph = document.createElement('p'); // Create a paragraph
   paragraph.innerHTML = content;
 
-  paragraph.id = __utils.unused_id(); // Set up a random id
+  paragraph.id = __utils.unused_id(section_id + '_'); // Set up a random id
 
   paragraph.setAttribute('class', 'paragraph');
   section.appendChild(paragraph);
@@ -82,7 +96,7 @@ export function add_subtitle(content, section_id) {
   var subtitle = document.createElement('h3');
   subtitle.innerHTML = content;
 
-  subtitle.id = __utils.unused_id(); // Set up a random id
+  subtitle.id = __utils.unused_id(section_id + '_'); // Set up a random id
 
   subtitle.setAttribute('class', 'subtitle');
   section.appendChild(subtitle);
@@ -102,7 +116,7 @@ export function add_figure(img_name, caption, section_id) {
 
   // Create and set up figure tag
   var figure = document.createElement('figure');
-  figure.id = __utils.unused_id(); // Set up a random id
+  figure.id = __utils.unused_id(section_id + '_'); // Set up a random id
   figure.setAttribute('class', 'figure');
 
   // Append tags
@@ -117,7 +131,7 @@ export function add_quote(content, section_id) {
   var quote = document.createElement('blockquote'); // Create a blockquote
   quote.innerHTML = content;
 
-  quote.id = __utils.unused_id(); // Set up a random id
+  quote.id = __utils.unused_id(section_id + '_'); // Set up a random id
 
   quote.setAttribute('class', 'quote');
   section.appendChild(quote);

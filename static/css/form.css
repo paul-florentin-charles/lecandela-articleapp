@@ -1,19 +1,145 @@
 #form {
   float: left;
-  width: 50%;
+  width: 48%;
+  padding-left: 1%;
   white-space: pre-line;
+  border-style: dashed;
+  border-width: medium;
+  border-radius: 2px;
 }
 
-#form * {
+input, button, label, select, textarea {
   margin-bottom: 10px;
-  margin-right: 5px;
+  margin-left: 10px;
 }
+
+button, select, input[type="checkbox"] {
+  cursor: pointer;
+}
+
+#form h2 {
+  text-align: center;
+  font-weight: bold;
+}
+
+h3 {
+  margin-top: -5px;
+  margin-bottom: 5px;
+  text-align: center;
+  font-style: italic;
+}
+
+/* Form header */
+
+#f_header {
+  width: 45%;
+  border-style: inset;
+  border-width: thin;
+  border-radius: 5px;
+}
+
+#f_title {
+  width: 85%;
+}
+
+#f_author {
+  width: 50%;
+}
+
+#f_date {
+  height: 35px;
+}
+
+/* Form section manager */
+
+#f_sctn {
+  margin-bottom: 0px;
+  width: 70%;
+  border-style: inset;
+  border-width: thin;
+  border-radius: 5px;
+}
+
+#f_sctn_nbr {
+  width: 12%;
+}
+
+#f_sctn_name {
+  width: 55%;
+}
+
+label[for="f_sctn_show_nbr"] {
+  font-size: 0.85em;
+}
+
+/* Form element manager */
 
 #f_el {
+  margin-bottom: 0px;
   display: none;
+  width: 80%;
+  border-style: inset;
+  border-width: thin;
+  border-radius: 5px;
 }
 
-textarea {
-  width: 70%;
+#f_el_par {
+  padding-top: 4px;
+  text-indent: 8px;
+  width: 80%;
   height: 200px;
+  border-style: solid;
+  border-width: thin;
+  border-radius: 5px;
+}
+
+#f_el_par:focus {
+  border-color: rgba(10, 100, 150, 0.8);
+  border-width: 2px;
+}
+
+#f_el_subttl {
+  width: 50%;
+}
+
+#f_el_caption {
+  width: 45%;
+}
+
+#f_el_img {
+  display: None;
+}
+
+label[for="f_el_img"] {
+  cursor: pointer;
+  display: inline-block;
+  width: 45%;
+  height: 25px;
+  border-style: solid;
+  border-width: thin;
+  border-radius: 5px;
+  border-color: rgba(220, 220, 220, 0.7);
+  background-color: rgba(230, 230, 230, 0.6);
+  color: #333333;
+  text-align: center;
+  font-size: 0.85em;
+  padding-top: 10px;
+}
+
+label[for="f_el_img"]:hover {
+  background-color: rgba(240, 240, 240, 0.6);
+}
+
+#f_el_quote {
+  width: 60%;
+}
+
+/* Form exports */
+
+#f_save {
+  margin-bottom: 0px;
+  width: 30%;
+  border-style: inset;
+  border-width: thin;
+  border-radius: 5px;
 }

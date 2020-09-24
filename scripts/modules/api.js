@@ -17,7 +17,9 @@ export function update_author() { __art.set_author(__form.get_author()); }
 
 export function update_date() { __art.set_date(__form.get_date()); }
 
-export function update_section() { __upd.update_section(); }
+export function update_section() { __upd.update_section(); highlight_element();}
+
+export function update_img_button() { __upd.update_img_button(); }
 
 /*** ADD/REMOVE ***/
 
@@ -44,11 +46,10 @@ export function add_section() {
   var show_nbr = document.getElementById('f_sctn_show_nbr').checked;
   __art.add_section(section_id, (show_nbr ? nbr + '- ' : '') + name);
 
-  // Flushing input fields
-  document.getElementById('f_sctn_name').value = null;
-  document.getElementById('f_sctn_nbr').value = null;
+  document.getElementById('f_sctn_name').value = null; // Flushing name input
+  document.getElementById('f_sctn_nbr').value = parseInt(document.getElementById('f_sctn_nbr').value) + 1; // Setting next value ready for section number
 
-  update_section(); // Updating modified section
+  __upd.update_section(); // Updating modified section
 }
 
 export function remove_section() {
@@ -67,7 +68,7 @@ export function remove_section() {
   lst.removeChild(lst.children[idx]); // Removing section from section list
   if (lst.children[idx-1]) lst.children[idx-1].selected = true; // Selecting previous item, if there is one
 
-  update_section(); // Updating modified section
+  __upd.update_section(); // Updating modified section
 }
 
 /*** ELEMENTS ***/
@@ -124,6 +125,7 @@ export function add_figure() {
 
   __art.add_figure(img_file.name, caption, __form.get_section_id()); // Add figure to article
   __upd.update_element(); // Update list of elements
+  __upd.update_img_button();
 }
 
 export function add_quote() {
@@ -161,6 +163,8 @@ export function modify_element() {
   console.log("TODO: modify_element()")
   // TODO:
 }
+
+export function highlight_element() { __art.highlight_element(document.getElementById('f_el_lst')); }
 
 /*** SAVES ***/
 

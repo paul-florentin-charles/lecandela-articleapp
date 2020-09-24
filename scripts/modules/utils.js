@@ -23,9 +23,9 @@ export function get_children(element, skip = 0) {
   return elements;
 }
 
-export function unused_id() {
-  var id = Math.random();
-  while (document.getElementById(id)) id = Math.random();
+export function unused_id(prefix = '') {
+  var id = prefix + Math.random();
+  while (document.getElementById(id)) id = prefix + Math.random();
 
   return id;
 }

@@ -48,11 +48,16 @@ document.getElementById('f_el_add_par').onclick = function() { __api.add_paragra
 // Trigger button used to add subtitle, on click
 document.getElementById('f_el_add_subttl').onclick = function() { __api.add_subtitle(); };
 
+// Trigger button used to add image, on change
+document.getElementById('f_el_img').onchange = function() { __api.update_img_button(); };
 // Trigger button used to add figure, on click
 document.getElementById('f_el_add_fig').onclick = function() { __api.add_figure(); };
 
 // Trigger button used to add quote, on click
 document.getElementById('f_el_add_quote').onclick = function() { __api.add_quote(); };
+
+// Trigger highlighting when new element is selected
+document.getElementById('f_el_lst').onchange = function() { __api.highlight_element(); };
 
 // Trigger button used to modify element, on click
 document.getElementById('f_el_mod_element').onclick = function() { __api.modify_element(); };
