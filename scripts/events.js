@@ -30,8 +30,9 @@ document.getElementById('f_date').onchange = function() { __api.update_date(); }
 // Update element manager whenever a new section is selected
 document.getElementById('f_sctn_lst').onchange = function() { __api.update_section(); };
 
-// Trigger add and remove section buttons on click
+// Trigger add, modify and remove section buttons on click
 document.getElementById('f_sctn_add').onclick = function() { __api.add_section(); };
+document.getElementById('f_sctn_mod').onclick = function() { __api.modify_section(); };
 document.getElementById('f_sctn_rm').onclick = function() { __api.remove_section(); };
 
 /** Element manager **/
@@ -56,11 +57,8 @@ document.getElementById('f_el_add_fig').onclick = function() { __api.add_figure(
 // Trigger button used to add quote, on click
 document.getElementById('f_el_add_quote').onclick = function() { __api.add_quote(); };
 
-// Trigger highlighting when new element is selected
-document.getElementById('f_el_lst').onchange = function() { __api.highlight_element(); };
-
 // Trigger button used to modify element, on click
-document.getElementById('f_el_mod_element').onclick = function() { __api.modify_element(); };
+document.getElementById('f_el_copy_element').onclick = function() { __api.copy_element_content(); };
 
 // Trigger button used to remove element, on click
 document.getElementById('f_el_rm_element').onclick = function() { __api.remove_element(); };

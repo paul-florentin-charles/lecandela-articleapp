@@ -25,7 +25,6 @@ function init_article() {
   var date = document.createElement('span');
   date.id = 'a_date';
   footer.appendChild(author);
-  footer.appendChild(document.createTextNode("\t"));
   footer.appendChild(date);
 
   // Appending the 3 main sections to article

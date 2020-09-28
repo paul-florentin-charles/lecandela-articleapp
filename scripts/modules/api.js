@@ -17,11 +17,11 @@ export function update_author() { __art.set_author(__form.get_author()); }
 
 export function update_date() { __art.set_date(__form.get_date()); }
 
-export function update_section() { __upd.update_section(); highlight_element();}
+export function update_section() { __upd.update_section(); }
 
 export function update_img_button() { __upd.update_img_button(); }
 
-/*** ADD/REMOVE ***/
+/*** ADD/REMOVE/MODIFY ***/
 
 export function add_section() {
   var name = document.getElementById('f_sctn_name').value;
@@ -44,11 +44,10 @@ export function add_section() {
   }
 
   var show_nbr = document.getElementById('f_sctn_show_nbr').checked;
-  __art.add_section(section_id, (show_nbr ? nbr + '- ' : '') + name);
+  var name = (show_nbr ? nbr + '- ' : '') + name;
 
-  document.getElementById('f_sctn_name').value = null; // Flushing name input
-  document.getElementById('f_sctn_nbr').value = parseInt(document.getElementById('f_sctn_nbr').value) + 1; // Setting next value ready for section number
-
+  __art.add_section(section_id, name);
+  __form.add_section(section_id, name);
   __upd.update_section(); // Updating modified section
 }
 
@@ -61,14 +60,48 @@ export function remove_section() {
     return 0;
   }
 
-  if (!confirm("This cannot be undone, are you sure ?")) return 0;
+  __utils.confirm_action("This cannot be undone, are you sure ?");
 
   __art.remove_section(__form.get_section_id());
-
-  lst.removeChild(lst.children[idx]); // Removing section from section list
-  if (lst.children[idx-1]) lst.children[idx-1].selected = true; // Selecting previous item, if there is one
-
+  __form.remove_section();
   __upd.update_section(); // Updating modified section
+}
+
+export function modify_section() {
+  var lst = document.getElementById('f_sctn_lst');
+  var idx = lst.selectedIndex;
+
+  if (idx == -1) {
+    alert("There\'s no section to modify or you haven\'t selected one");
+    return 0;
+  }
+
+  var new_name = document.getElementById('f_sctn_name').value;
+  var new_nbr = document.getElementById('f_sctn_nbr').value;
+
+  if (!new_name || !new_nbr) {
+    alert('Name and number must be filled');
+    return 0;
+  }
+
+  if (isNaN(new_nbr) || new_nbr < 0) {
+    alert('Section number must be a positive number');
+    return 0;
+  }
+
+  var section_id = __form.get_section_id();
+  var section_new_id = 's_' + new_nbr;
+  if (section_id != section_new_id && document.getElementById(section_new_id)) {
+    alert('There is already a section ' + new_nbr);
+    return 0;
+  }
+
+  var show_nbr = document.getElementById('f_sctn_show_nbr').checked;
+  var new_name = (show_nbr ? new_nbr + '- ' : '') + new_name;
+
+  __art.modify_section(section_id, section_new_id, new_name);
+  __form.modify_section(section_new_id, new_name);
+  __upd.update_section();
 }
 
 /*** ELEMENTS ***/
@@ -151,20 +184,23 @@ export function remove_element() {
     return 0;
   }
 
-  if (!confirm("This cannot be undone, are you sure ?")) {
-    return 0;
-  }
+  __utils.confirm_action("This cannot be undone, are you sure ?");
 
   __art.remove_element(lst, idx);
   __upd.update_element(); // Update list of elements
 }
 
-export function modify_element() {
-  console.log("TODO: modify_element()")
-  // TODO:
-}
+export function copy_element_content() {
+  var lst = document.getElementById('f_el_lst');
+  var idx = lst.selectedIndex;
 
-export function highlight_element() { __art.highlight_element(document.getElementById('f_el_lst')); }
+  if (idx == -1) {
+    alert("There\'s no element to copy or you haven\'t selected one");
+    return 0;
+  }
+
+  __form.copy_element_content(__form.get_element_id());
+}
 
 /*** SAVES ***/
 
@@ -180,7 +216,7 @@ export function export_json() {
 }
 
 export function export_html() {
-  __utils.save_file(document.getElementById('article').innerHTML, __cfg.get_html_fname());
+  __utils.save_file(__art.get_article(), __cfg.get_html_fname());
 }
 
 /*** UTILS ***/

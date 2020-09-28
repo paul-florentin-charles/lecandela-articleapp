@@ -4,7 +4,28 @@ import * as __form from './form.js';
 
 /** GETTERS **/
 
-export function get_article() { return document.getElementById('article').innerHTML; }
+export function get_article() {
+  var art =  document.getElementById('article');
+
+  // Removing all ids of elements and sections
+  for (var par of art.getElementsByClassName('paragraph')) {
+    par.removeAttribute('id');
+  }
+  for (var sub of art.getElementsByClassName('subtitle')) {
+    sub.removeAttribute('id');
+  }
+  for (var fig of art.getElementsByClassName('figure')) {
+    fig.removeAttribute('id');
+  }
+  for (var quo of art.getElementsByClassName('quote')) {
+    quo.removeAttribute('id');
+  }
+  for (var sec of art.getElementsByClassName('a_section')) {
+    sec.removeAttribute('id');
+  }
+
+  return art.innerHTML;
+}
 
 /** SETTERS **/
 
@@ -29,27 +50,31 @@ export function add_section(section_id, name) {
 
   section.appendChild(title);
 
-  // Adding section to section list (<select> tag)
-  var lst = document.getElementById('f_sctn_lst');
-
-  var option = document.createElement('option');
-  option.value = section_id;
-  option.innerHTML = name;
+  // Adding section to core of article
+  var core = document.getElementById('a_core');
 
   var inserted = false;
-  for (var opt of lst.children) {
-    if (__form.get_section_nbr(opt.value) > __form.get_section_nbr(option.value)) {
-      lst.insertBefore(option, opt); // Insert before higher rank option
+  for (var sctn of core.children) {
+    if (__form.get_section_nbr(sctn.id) > __form.get_section_nbr(section.id)) {
+      core.insertBefore(section, sctn); // Insert before higher number section
       inserted = true;
       break;
     }
   }
-  if (!inserted) lst.appendChild(option);
+  if (!inserted) core.appendChild(section);
+}
 
-  // Adding section to core of article
+export function modify_section(section_id, section_new_id, new_name) {
+  var section = document.getElementById(section_id);
+  var title = section.children[0];
+
+  title.innerHTML = new_name;
+  section.id = section_new_id;
+
+  // Re-adding section to core of article
   var core = document.getElementById('a_core');
 
-  inserted = false;
+  var inserted = false;
   for (var sctn of core.children) {
     if (__form.get_section_nbr(sctn.id) > __form.get_section_nbr(section.id)) {
       core.insertBefore(section, sctn); // Insert before higher number section
@@ -63,20 +88,6 @@ export function add_section(section_id, name) {
 /** ARTICLE ELEMENTS **/
 
 export function remove_element(el_lst, el_idx) { document.getElementById(el_lst.children[el_idx].value).remove(); }
-
-export function highlight_element(el_lst) {
-  // Unhighlight all
-  for (var el of el_lst.children) {
-    document.getElementById(el.value).style.color = 'black';
-  }
-
-  var selected_idx = el_lst.selectedIndex;
-  if (selected_idx != -1) {
-    var selected_option = el_lst.children[selected_idx];
-    var element_id = selected_option.value;
-    document.getElementById(element_id).style.color = '#bbcc44fc';
-  }
-}
 
 export function add_paragraph(content, section_id) {
   var section = document.getElementById(section_id);

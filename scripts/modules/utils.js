@@ -30,6 +30,8 @@ export function unused_id(prefix = '') {
   return id;
 }
 
+export function confirm_action(msg) { if (!confirm(msg)) return 0; }
+
 /* Styling tools for text fields (textarea, input type="text") */
 
 export function add_italic(text_field) {
@@ -61,8 +63,10 @@ export function add_link(text_field) {
 }
 
 export function add_ref(text_field) {
-  console.log("TODO: add_ref")
-  // TODO:
+  var select_pos = text_field.selectionStart + 15;
+  text_field.value = text_field.value.slice(0, text_field.selectionStart) + '<sup><a href="#r_1">[1]</a></sup>' + text_field.value.slice(text_field.selectionEnd, text_field.value.length);
+  text_field.focus();
+  text_field.selectionEnd = select_pos;
 }
 
 /* Dictionaries */
@@ -71,8 +75,7 @@ export var class2name = {
   paragraph: 'Paragraphe',
   subtitle: 'Sous-titre',
   figure: 'Figure',
-  quote: 'Citation',
-  list: 'Liste'
+  quote: 'Citation'
 };
 
 var type2tag = {};

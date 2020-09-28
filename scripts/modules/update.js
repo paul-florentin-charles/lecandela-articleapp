@@ -29,8 +29,6 @@ export function update_element() {
     option.innerHTML = (idx + 1) + ". " + __utils.class2name[element.getAttribute('class')] + ' : ' + (element.children[1] ? element.children[1] : element).innerHTML.slice(0, 15) + '...';
     el_lst.appendChild(option);
   }
-
-  __art.highlight_element(el_lst);
 }
 
 export function update_img_button() {

@@ -134,6 +134,32 @@ label[for="f_el_img"]:hover {
   width: 60%;
 }
 
+/* Form reference manager */
+
+#f_ref {
+  margin-bottom: 0px;
+  width: 75%;
+  border-style: inset;
+  border-width: thin;
+  border-radius: 5px;
+}
+
+#f_ref_name {
+  width: 55%;
+}
+
+#f_ref_author {
+  width: 30%;
+}
+
+#f_ref_src {
+  width: 45%;
+}
+
+#f_ref_year {
+  width: 10%;
+}
+
 /* Form exports */
 
 #f_save {
