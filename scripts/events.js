@@ -63,6 +63,17 @@ document.getElementById('f_el_copy_element').onclick = function() { __api.copy_e
 // Trigger button used to remove element, on click
 document.getElementById('f_el_rm_element').onclick = function() { __api.remove_element(); };
 
+/** Reference manager **/
+
+// Trigger button used to add reference, on click
+document.getElementById('f_ref_add').onclick = function() {__api.add_reference(); }
+
+// Trigger button used to modify reference, on click
+document.getElementById('f_ref_mod').onclick = function() {__api.modify_reference(); }
+
+// Trigger button used to remove reference, on click
+document.getElementById('f_ref_rm').onclick = function() {__api.remove_reference(); }
+
 /** Export **/
 
 // Trigger export buttons on click

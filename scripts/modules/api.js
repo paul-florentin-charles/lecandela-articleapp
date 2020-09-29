@@ -21,7 +21,7 @@ export function update_section() { __upd.update_section(); }
 
 export function update_img_button() { __upd.update_img_button(); }
 
-/*** ADD/REMOVE/MODIFY ***/
+/*** SECTIONS ***/
 
 export function add_section() {
   var name = document.getElementById('f_sctn_name').value;
@@ -60,7 +60,7 @@ export function remove_section() {
     return 0;
   }
 
-  __utils.confirm_action("This cannot be undone, are you sure ?");
+  if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
   __art.remove_section(__form.get_section_id());
   __form.remove_section();
@@ -145,12 +145,8 @@ export function add_figure() {
   }
 
   var input = document.getElementById('f_el_caption'); // Get content of text input
-
   var caption = input.value.trim();
-  if (!caption) {
-    alert("Input for caption is empty, please fill it.")
-    return 0;
-  }
+
 
   // Clear file and text inputs
   file.value = null;
@@ -184,7 +180,7 @@ export function remove_element() {
     return 0;
   }
 
-  __utils.confirm_action("This cannot be undone, are you sure ?");
+  if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
   __art.remove_element(lst, idx);
   __upd.update_element(); // Update list of elements
@@ -200,6 +196,66 @@ export function copy_element_content() {
   }
 
   __form.copy_element_content(__form.get_element_id());
+}
+
+/*** REFERENCES ***/
+
+export function add_reference() {
+  var name = document.getElementById('f_ref_name').value;
+  var author = document.getElementById('f_ref_author').value;
+  var src = document.getElementById('f_ref_src').value;
+  var year = document.getElementById('f_ref_year').value;
+  var url = document.getElementById('f_ref_url').value;
+
+  if (!name || !src) {
+    alert("Name and source must be filled, other fields are optional");
+    return 0;
+  }
+
+  var ref_id = 'ref_' + (__form.get_reference_amnt() + 1);
+
+  __art.add_reference(ref_id, name, author, src, year, url);
+  __form.add_reference(ref_id, name, src);
+}
+
+export function modify_reference() {
+  var lst = document.getElementById('f_ref_lst');
+  var idx = lst.selectedIndex;
+
+  if (idx == -1) {
+    alert("There\'s no reference to remove or you haven\'t selected one");
+    return 0;
+  }
+
+  var name = document.getElementById('f_ref_name').value;
+  var author = document.getElementById('f_ref_author').value;
+  var src = document.getElementById('f_ref_src').value;
+  var year = document.getElementById('f_ref_year').value;
+  var url = document.getElementById('f_ref_url').value;
+
+  if (!name || !src) {
+    alert("Name and source must be filled, other fields are optional");
+    return 0;
+  }
+
+  __art.modify_reference(__form.get_reference_id(), name, author, src, year, url);
+  __form.modify_reference(name, src);
+}
+
+export function remove_reference() {
+  var lst = document.getElementById('f_ref_lst');
+  var idx = lst.selectedIndex;
+
+  if (idx == -1) {
+    alert("There\'s no reference to remove or you haven\'t selected one");
+    return 0;
+  }
+
+  if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
+
+  __art.remove_reference(__form.get_reference_id());
+  __form.remove_reference();
+  __upd.update_reference();
 }
 
 /*** SAVES ***/

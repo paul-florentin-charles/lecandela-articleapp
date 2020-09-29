@@ -38,3 +38,21 @@ export function update_img_button() {
   if (img.files[0]) img_label.innerHTML = img.files[0].name;
   else img_label.innerHTML = "Déposer une image";
 }
+
+export function update_reference() {
+  var lst = document.getElementById('f_ref_lst');
+
+  var cpt = 1;
+  for (var opt of lst.children) {
+    var ref_new_id = 'ref_' + cpt;
+    // Modify id in article
+    var ref = document.getElementById(opt.value);
+    ref.id = ref_new_id;
+    ref.children[0].setAttribute('href', '#' + ref_new_id + '_txt');
+
+    // Modify option value
+    opt.value = ref_new_id;
+
+    cpt++;
+  }
+}

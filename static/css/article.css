@@ -29,6 +29,11 @@ figure figcaption {
   text-align: center;
 }
 
-#a_footer span {
+#a_header span {
   margin-right: 10px;
+}
+
+#a_footer {
+  border-top-style: solid;
+  border-top-width: thin;
 }

@@ -5,7 +5,7 @@ import * as __form from './form.js';
 /** GETTERS **/
 
 export function get_article() {
-  var art =  document.getElementById('article');
+  var art =  document.getElementById('article').cloneNode(true);
 
   // Removing all ids of elements and sections
   for (var par of art.getElementsByClassName('paragraph')) {
@@ -17,10 +17,10 @@ export function get_article() {
   for (var fig of art.getElementsByClassName('figure')) {
     fig.removeAttribute('id');
   }
-  for (var quo of art.getElementsByClassName('quote')) {
+  for (var quo of art.getElementsByClassName('blockquote')) {
     quo.removeAttribute('id');
   }
-  for (var sec of art.getElementsByClassName('a_section')) {
+  for (var sec of art.getElementsByClassName('section')) {
     sec.removeAttribute('id');
   }
 
@@ -41,11 +41,11 @@ export function remove_section(section_id) { document.getElementById(section_id)
 
 export function add_section(section_id, name) {
   var title = document.createElement('h2');
-  title.setAttribute('class', 's_title');
+  title.setAttribute('class', 'title');
   title.innerHTML = name;
 
   var section = document.createElement('div');
-  section.setAttribute('class', 'a_section');
+  section.setAttribute('class', 'section');
   section.id = section_id;
 
   section.appendChild(title);
@@ -144,6 +144,46 @@ export function add_quote(content, section_id) {
 
   quote.id = __utils.unused_id(section_id + '_'); // Set up a random id
 
-  quote.setAttribute('class', 'quote');
+  quote.setAttribute('class', 'blockquote');
   section.appendChild(quote);
+}
+
+/** ARTICLE REFERENCES **/
+
+export function add_reference(ref_id, name, author, src, year, url) {
+  var ref = document.createElement('li');
+  ref.id = ref_id;
+
+  var refs = document.getElementById('a_references');
+  refs.appendChild(ref);
+
+  modify_reference(ref_id, name, author, src, year, url);
+}
+
+export function modify_reference(ref_id, name, author, src, year, url) {
+  var ref = document.getElementById(ref_id);
+
+  var info = [];
+
+  var href = '<a href="#' + ref_id + '_txt">&uarr;</a>';
+  info.push(href);
+  if (url) name = '<a href="' + url + '" target="_blank">' + name + '</a>';
+  name = '<span class="ref_name">' + name + '</span>';
+  info.push(name);
+  if (author) {
+    author = '<span class="ref_author">' + author + '</span>';
+    info.push(author);
+  }
+  src = '<span class="ref_src">' + src + '</span>';
+  info.push(src);
+  if (year) {
+    year = '<span class="ref_year">' + year + '</span>';
+    info.push(year);
+  }
+
+  ref.innerHTML = info.join('');
+}
+
+export function remove_reference(ref_id) {
+  document.getElementById(ref_id).remove();
 }

@@ -160,6 +160,10 @@ label[for="f_el_img"]:hover {
   width: 10%;
 }
 
+#f_ref_url {
+  width: 75%;
+}
+
 /* Form exports */
 
 #f_save {

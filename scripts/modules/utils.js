@@ -3,7 +3,9 @@
 export function date_US_to_EU(date_US) {
   var date = new Date(date_US);
   if (date.toDateString() == "Invalid Date") return "";
-  var date_EU = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+
+  var day = date.getDate(), month = date.getMonth() + 1, year = date.getFullYear()
+  var date_EU = (day < 10 ? "0" : "") + day + "." + (month < 10 ? "0" : "") + month + "." + year;
 
   return date_EU;
 }
@@ -29,8 +31,6 @@ export function unused_id(prefix = '') {
 
   return id;
 }
-
-export function confirm_action(msg) { if (!confirm(msg)) return 0; }
 
 /* Styling tools for text fields (textarea, input type="text") */
 
@@ -63,8 +63,8 @@ export function add_link(text_field) {
 }
 
 export function add_ref(text_field) {
-  var select_pos = text_field.selectionStart + 15;
-  text_field.value = text_field.value.slice(0, text_field.selectionStart) + '<sup><a href="#r_1">[1]</a></sup>' + text_field.value.slice(text_field.selectionEnd, text_field.value.length);
+  var select_pos = text_field.selectionStart + 34;
+  text_field.value = text_field.value.slice(0, text_field.selectionStart) + '<sup class="asterisk"><a id="ref_?_txt" href="#ref_?">[?]</a></sup>' + text_field.value.slice(text_field.selectionEnd, text_field.value.length);
   text_field.focus();
   text_field.selectionEnd = select_pos;
 }
@@ -75,7 +75,7 @@ export var class2name = {
   paragraph: 'Paragraphe',
   subtitle: 'Sous-titre',
   figure: 'Figure',
-  quote: 'Citation'
+  blockquote: 'Citation'
 };
 
 var type2tag = {};

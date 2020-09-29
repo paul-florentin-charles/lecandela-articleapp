@@ -24,6 +24,19 @@ export function get_element_id() {
   return lst.children[idx].value; // Return id of selected element
 }
 
+export function get_reference_id() {
+  var lst = document.getElementById('f_ref_lst');
+  var idx = lst.selectedIndex;
+
+  return lst.children[idx].value; // Return id of selected reference
+}
+
+export function get_reference_amnt() {
+  var lst = document.getElementById('f_ref_lst');
+
+  return lst.children.length;
+}
+
 /** SECTION MANAGER **/
 
 export function add_section(section_id, name) {
@@ -75,10 +88,46 @@ export function copy_element_content(element_id) {
     case 'figure':
       document.getElementById('f_el_caption').value = element.children[1].innerHTML;
       break;
-    case 'quote':
+    case 'blockquote':
       document.getElementById('f_el_quote').value = element.innerHTML;
       break;
     default:
       alert("Unknown element !");
   }
+}
+
+/* REFERENCE MANAGER */
+
+export function add_reference(ref_id, name, src) {
+  var lst = document.getElementById('f_ref_lst'); // Getting list of refrences
+
+  // Creating option with its right attributes
+  var option = document.createElement('option');
+  option.value = ref_id;
+  option.innerHTML = [name, '[' + src + ']'].join(' ');
+
+  lst.appendChild(option);
+
+  // Flushing input fields
+  var ids = ['f_ref_name', 'f_ref_author', 'f_ref_src', 'f_ref_year', 'f_ref_url']
+  for (var id of ids) document.getElementById(id).value = null;
+}
+
+export function modify_reference(name, src) {
+  var lst = document.getElementById('f_ref_lst'); // Getting list of references
+  var idx = lst.selectedIndex;
+  var option = lst.children[idx];
+
+  option.innerHTML = [name, '[' + src + ']'].join(' ');
+
+  // Flushing input fields
+  var ids = ['f_ref_name', 'f_ref_author', 'f_ref_src', 'f_ref_year', 'f_ref_url']
+  for (var id of ids) document.getElementById(id).value = null;
+}
+
+export function remove_reference() {
+  var lst = document.getElementById('f_ref_lst'); // Getting list of references
+  var idx = lst.selectedIndex;
+
+  lst.removeChild(lst.children[idx]); // Removing reference from reference list
 }

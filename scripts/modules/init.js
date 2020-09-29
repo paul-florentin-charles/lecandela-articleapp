@@ -15,17 +15,23 @@ function init_article() {
   footer.id = 'a_footer';
 
   // Header init
-  var title = document.createElement('h1');
+  var metadata = document.createElement('ul');
+  metadata.id = 'a_metadata';
+  var title = document.createElement('li');
   title.id = 'a_title';
-  header.appendChild(title);
+  var author = document.createElement('li');
+  author.id = 'a_author';
+  var date = document.createElement('li');
+  date.id = 'a_date';
+  metadata.appendChild(title);
+  metadata.appendChild(author);
+  metadata.appendChild(date);
+  header.appendChild(metadata);
 
   // Footer init
-  var author = document.createElement('span');
-  author.id = 'a_author';
-  var date = document.createElement('span');
-  date.id = 'a_date';
-  footer.appendChild(author);
-  footer.appendChild(date);
+  var references = document.createElement('ol');
+  references.id = 'a_references';
+  footer.appendChild(references);
 
   // Appending the 3 main sections to article
   var article = document.getElementById('article');
@@ -53,8 +59,7 @@ function init_form() {
   document.getElementById('f_el_img').files = null;
   document.getElementById('f_el_img').value = null;
 
-  // Setting textarea properties
-  /*var textarea = document.getElementById('f_el_par');
-  textarea.rows = 14;
-  textarea.cols = 100;*/
+  // Flushing reference manager inputs
+  ids = ['f_ref_name', 'f_ref_author', 'f_ref_src', 'f_ref_year', 'f_ref_url']
+  for (var id of ids) document.getElementById(id).value = null;
 }
