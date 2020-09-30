@@ -18,49 +18,49 @@
     <!-- Article creation -->
     <div id="form">
       <h2>Formulaire pour l'écriture d'article</h2>
-      <!-- Basic information -->
-      <div id="f_header">
-        <h3>Informations élémentaires</h3>
-        <input id="f_title" type="text" placeholder="Titre" required>
-        <input id="f_author" type="text" placeholder="Auteur" required>
-        <input id="f_date" type="date" required>
+      <!-- Metadata -->
+      <div id="f-header">
+        <h3>Métadonnées</h3>
+        <input id="f-title" type="text" placeholder="Titre" required>
+        <input id="f-author" type="text" placeholder="Auteur" required>
+        <input id="f-date" type="date" required>
       </div>
 
       <!-- Section manager -->
-      <div id="f_sctn">
+      <div id="f-sctn">
         <h3>Gestionnaire des sections</h3>
-        <input id="f_sctn_nbr" type="number" min="0" placeholder="Numéro"><input id="f_sctn_name" type="text" placeholder="Nom">
-        <label for="f_sctn_show_nbr">Afficher le numéro</label><input id="f_sctn_show_nbr" type="checkbox"><button id="f_sctn_add" type="button">Ajouter une section</button>
-        <select id="f_sctn_lst"></select><button id="f_sctn_mod" type="button">Modifier la section</button><button id="f_sctn_rm" type="button">Supprimer la section</button>
+        <input id="f-sctn-nbr" type="number" min="0" placeholder="Numéro"><input id="f-sctn-name" type="text" placeholder="Nom">
+        <label for="f-sctn-show-nbr">Afficher le numéro</label><input id="f-sctn-show-nbr" type="checkbox"><button id="f-sctn-add" type="button">Ajouter une section</button>
+        <select id="f-sctn-lst"></select><button id="f-sctn-mod" type="button">Modifier la section</button><button id="f-sctn-rm" type="button">Supprimer la section</button>
       </div>
 
       <!-- Element manager (i.e. the content of a section) -->
-      <div id="f_el">
+      <div id="f-el">
         <h3>Gestionnaire des éléments de section</h3>
-        <button id="f_el_par_it" type="button"><i>I</i></button><button id="f_el_par_bold" type="button"><b>B</b></button><button id="f_el_par_quote" type="button"><q></q></button><button id="f_el_par_link" type="button">&#128279;</button><button id="f_el_par_ref" type="button">ref<sup>[1]</sup></button>
-        <textarea id="f_el_par" placeholder="Paragraphe"></textarea>
-        <button id="f_el_add_par" type="button">Ajouter un paragraphe</button>
-        <input id="f_el_subttl" type="text" placeholder="Sous-titre"><button id="f_el_add_subttl" type="button">Ajouter un sous-titre</button>
-        <input id="f_el_caption" type="text" placeholder="Légende"><label for="f_el_img">Déposer une image</label><input id="f_el_img" type="file"><button id="f_el_add_fig" type="button">Ajouter une figure</button>
-        <input id="f_el_quote" type="text" placeholder="Citation"><button id="f_el_add_quote" type="button">Ajouter une citation</button>
-        <select id="f_el_lst"></select><button id="f_el_copy_element" type="button">Copier le contenu de l'élément</button><button id="f_el_rm_element" type="button">Supprimer l'élément</button>
+        <button id="f-el-par-it" type="button"><i>I</i></button><button id="f-el-par-bold" type="button"><b>B</b></button><button id="f-el-par-quote" type="button"><q></q></button><button id="f-el-par-link" type="button">&#128279;</button><button id="f-el-par-ref" type="button">ref<sup>[1]</sup></button>
+        <textarea id="f-el-par" placeholder="Paragraphe"></textarea>
+        <button id="f-el-add-par" type="button">Ajouter un paragraphe</button>
+        <input id="f-el-subttl" type="text" placeholder="Sous-titre"><button id="f-el-add-subttl" type="button">Ajouter un sous-titre</button>
+        <input id="f-el-caption" type="text" placeholder="Légende"><label for="f-el-img">Déposer une image</label><input id="f-el-img" type="file"><button id="f-el-add-fig" type="button">Ajouter une figure</button>
+        <input id="f-el-quote" type="text" placeholder="Citation"><button id="f-el-add-quote" type="button">Ajouter une citation</button>
+        <select id="f-el-lst"></select><button id="f-el-copy-element" type="button">Copier le contenu de l'élément</button><button id="f-el-rm-element" type="button">Supprimer l'élément</button>
       </div>
 
       <!-- Reference manager -->
-      <div id="f_ref">
+      <div id="f-ref">
         <h3>Gestionnaire des références</h3>
-        <input id="f_ref_name" type="text" placeholder="Nom"><input id="f_ref_author" type="text" placeholder="Auteur">
-        <input id="f_ref_src" type="text" placeholder="Source"><input id="f_ref_year" type="number" placeholder="Année">
-        <input id="f_ref_url" type="url" placeholder="Lien">
-        <button id="f_ref_add" type="button">Ajouter une référence</button>
-        <select id="f_ref_lst"></select><button id="f_ref_mod" type="button">Modifier la référence</button><button id="f_ref_rm" type="button">Supprimer la référence</button>
+        <input id="f-ref-name" type="text" placeholder="Nom"><input id="f-ref-author" type="text" placeholder="Auteur">
+        <input id="f-ref-src" type="text" placeholder="Source"><input id="f-ref-year" type="number" placeholder="Année">
+        <input id="f-ref-url" type="url" placeholder="Lien">
+        <button id="f-ref-add" type="button">Ajouter une référence</button>
+        <select id="f-ref-lst"></select><button id="f-ref-mod" type="button">Modifier la référence</button><button id="f-ref-rm" type="button">Supprimer la référence</button>
       </div>
 
       <!-- Export -->
-      <div id="f_save">
+      <div id="f-save">
         <h3>Sauvegarder l'article</h3>
-        <button id="f_save_html" type="button">Exporter au format <i>html</i></button>
-        <button id="f_save_json" type="button">Exporter au format <b>JSON</b></button>
+        <button id="f-save-html" type="button">Exporter au format <i>html</i></button>
+        <button id="f-save-json" type="button">Exporter au format <b>JSON</b></button>
       </div>
     </div>
 

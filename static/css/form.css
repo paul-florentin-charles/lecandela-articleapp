@@ -31,28 +31,28 @@ h3 {
 
 /* Form header */
 
-#f_header {
+#f-header {
   width: 45%;
   border-style: inset;
   border-width: thin;
   border-radius: 5px;
 }
 
-#f_title {
+#f-title {
   width: 85%;
 }
 
-#f_author {
+#f-author {
   width: 50%;
 }
 
-#f_date {
+#f-date {
   height: 35px;
 }
 
 /* Form section manager */
 
-#f_sctn {
+#f-sctn {
   margin-bottom: 0px;
   width: 70%;
   border-style: inset;
@@ -60,21 +60,21 @@ h3 {
   border-radius: 5px;
 }
 
-#f_sctn_nbr {
+#f-sctn-nbr {
   width: 12%;
 }
 
-#f_sctn_name {
+#f-sctn-name {
   width: 55%;
 }
 
-label[for="f_sctn_show_nbr"] {
+label[for="f-sctn-show-nbr"] {
   font-size: 0.85em;
 }
 
 /* Form element manager */
 
-#f_el {
+#f-el {
   margin-bottom: 0px;
   display: none;
   width: 80%;
@@ -83,7 +83,7 @@ label[for="f_sctn_show_nbr"] {
   border-radius: 5px;
 }
 
-#f_el_par {
+#f-el-par {
   padding-top: 4px;
   text-indent: 8px;
   width: 80%;
@@ -93,24 +93,24 @@ label[for="f_sctn_show_nbr"] {
   border-radius: 5px;
 }
 
-#f_el_par:focus {
+#f-el-par:focus {
   border-color: rgba(10, 100, 150, 0.8);
   border-width: 2px;
 }
 
-#f_el_subttl {
+#f-el-subttl {
   width: 50%;
 }
 
-#f_el_caption {
+#f-el-caption {
   width: 45%;
 }
 
-#f_el_img {
+#f-el-img {
   display: None;
 }
 
-label[for="f_el_img"] {
+label[for="f-el-img"] {
   cursor: pointer;
   display: inline-block;
   width: 45%;
@@ -126,17 +126,17 @@ label[for="f_el_img"] {
   padding-top: 10px;
 }
 
-label[for="f_el_img"]:hover {
+label[for="f-el-img"]:hover {
   background-color: rgba(240, 240, 240, 0.6);
 }
 
-#f_el_quote {
+#f-el-quote {
   width: 60%;
 }
 
 /* Form reference manager */
 
-#f_ref {
+#f-ref {
   margin-bottom: 0px;
   width: 75%;
   border-style: inset;
@@ -144,29 +144,29 @@ label[for="f_el_img"]:hover {
   border-radius: 5px;
 }
 
-#f_ref_name {
+#f-ref-name {
   width: 55%;
 }
 
-#f_ref_author {
+#f-ref-author {
   width: 30%;
 }
 
-#f_ref_src {
+#f-ref-src {
   width: 45%;
 }
 
-#f_ref_year {
+#f-ref-year {
   width: 10%;
 }
 
-#f_ref_url {
+#f-ref-url {
   width: 75%;
 }
 
 /* Form exports */
 
-#f_save {
+#f-save {
   margin-bottom: 0px;
   width: 30%;
   border-style: inset;

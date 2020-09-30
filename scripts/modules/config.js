@@ -1,13 +1,16 @@
+/* Config */
+
 var cfg = {
-  "html": {
-    "f_name": "article.html",
-    "ttl_tag": "h1"
-  },
-  "json": {
-    "f_name": "article.json"
-  },
-  "img_path": "./local/img/"
-}
+    "html": {
+        "f_name": "article.html",
+    },
+    "json": {
+        "f_name": "article.json"
+    },
+    "img_path": "./local/img/"
+};
+
+/* Getters*/
 
 export function get_html_fname() { return cfg["html"]["f_name"]; }
 

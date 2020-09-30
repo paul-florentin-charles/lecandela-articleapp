@@ -9,15 +9,15 @@
   border-radius: 2px;
 }
 
-.subtitle {
+.a-subtitle {
   text-align: left;
 }
 
-.paragraph {
+.a-paragraph {
   text-indent: 15px;
 }
 
-figure img {
+.a-figure img {
   width: 75%;
   height: 420px;
   display: block;
@@ -25,15 +25,15 @@ figure img {
   margin-right: auto;
 }
 
-figure figcaption {
+.a-figure figcaption {
   text-align: center;
 }
 
-#a_header span {
+#a-header span {
   margin-right: 10px;
 }
 
-#a_footer {
+#a-footer {
   border-top-style: solid;
   border-top-width: thin;
 }

@@ -1,65 +1,55 @@
 /* Init functions */
 
-export function init_document() {
-  init_article();
-  init_form();
+/** Main function **/
+
+export function init_document(article_id, checkboxes_ids = [], inputs_ids = []) {
+  init_article(article_id);
+  init_form(checkboxes_ids, inputs_ids);
 }
 
-function init_article() {
+/** Sub-functions **/
+
+function init_article(article_id) {
   // Creating the 3 main sections of article (header, core and footer)
   var header = document.createElement('div');
-  header.id = 'a_header';
+  header.id = 'a-header';
   var core = document.createElement('div');
-  core.id = 'a_core';
+  core.id = 'a-core';
   var footer = document.createElement('div');
-  footer.id = 'a_footer';
+  footer.id = 'a-footer';
 
   // Header init
   var metadata = document.createElement('ul');
-  metadata.id = 'a_metadata';
+  metadata.id = 'a-metadata';
+
   var title = document.createElement('li');
-  title.id = 'a_title';
+  title.id = 'a-meta-title';
   var author = document.createElement('li');
-  author.id = 'a_author';
+  author.id = 'a-meta-author';
   var date = document.createElement('li');
-  date.id = 'a_date';
+  date.id = 'a-meta-date';
+
   metadata.appendChild(title);
   metadata.appendChild(author);
   metadata.appendChild(date);
+
   header.appendChild(metadata);
 
   // Footer init
   var references = document.createElement('ol');
-  references.id = 'a_references';
+  references.id = 'a-references';
+
   footer.appendChild(references);
 
   // Appending the 3 main sections to article
-  var article = document.getElementById('article');
+  var article = document.getElementById(article_id);
+
   article.appendChild(header);
   article.appendChild(core);
   article.appendChild(footer);
 }
 
-function init_form() {
-  // Flushing input fields of form
-  var ids = ['f_title', 'f_author', 'f_date', 'f_sctn_name', 'f_sctn_nbr'];
-  for (var id of ids) document.getElementById(id).value = null;
-
-  // Reset select tag used for section selection
-  document.getElementById('f_sctn_lst').length = 0;
-
-  // Checking rank displayal checkbox by default
-  document.getElementById('f_sctn_show_nbr').checked = true;
-
-  // Flushing textarea and inputs of element manager
-  ids = ['f_el_par', 'f_el_subttl', 'f_el_caption', 'f_el_quote'];
-  for (var id of ids) document.getElementById(id).value = null;
-
-  // Flushing file input of element manager, for images
-  document.getElementById('f_el_img').files = null;
-  document.getElementById('f_el_img').value = null;
-
-  // Flushing reference manager inputs
-  ids = ['f_ref_name', 'f_ref_author', 'f_ref_src', 'f_ref_year', 'f_ref_url']
-  for (var id of ids) document.getElementById(id).value = null;
+function init_form(checkboxes_ids = [], inputs_ids = []) {
+  for (var id of checkboxes_ids) document.getElementById(id).checked = true; // Checking all by default
+  for (var id of inputs_ids) document.getElementById(id).value = null; // Flushing desired inputs
 }

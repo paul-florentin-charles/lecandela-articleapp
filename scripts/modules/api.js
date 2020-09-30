@@ -3,140 +3,76 @@ import * as __init from './init.js';
 import * as __form from './form.js';
 import * as __art from './article.js';
 import * as __cfg from './config.js';
-import * as __upd from './update.js';
 
 /*** INIT ***/
 
-export function init() { __init.init_document(); }
+export function init() { __init.init_document('article', ['f-sctn-show-nbr'], ['f-sctn-nbr']); }
 
 /*** UPDATES ***/
 
-export function update_title() { __art.set_title(__form.get_title()); }
+export function update_title() { __art.set_inner_html('a-meta-title', __form.get_value('f-title')); }
 
-export function update_author() { __art.set_author(__form.get_author()); }
+export function update_author() { __art.set_inner_html('a-meta-author', __form.get_value('f-author')); }
 
-export function update_date() { __art.set_date(__form.get_date()); }
+export function update_date() { __art.set_inner_html('a-meta-date', __form.get_value('f-date')); }
 
-export function update_section() { __upd.update_section(); }
+export function update_section() {
+  if (__form.update_section('f-el', 'f-sctn-lst'))  {
+    __form.update_element('f-sctn-lst', 'f-el-lst');
+  }
+}
 
-export function update_img_button() { __upd.update_img_button(); }
+export function update_img_button() { __form.update_img_button('f-el-img'); }
 
 /*** SECTIONS ***/
 
 export function add_section() {
-  var name = document.getElementById('f_sctn_name').value;
-  var nbr = document.getElementById('f_sctn_nbr').value;
-
-  if (!name || !nbr) {
-    alert('Name and number must be filled');
-    return 0;
+  var sctn_info = __form.add_section('f-sctn-name', 'f-sctn-nbr', 'f-sctn-show-nbr', 'f-sctn-lst');
+  if (sctn_info) {
+    __art.add_section.apply(null, sctn_info);
+    update_section(); // Display list of element corresponding to newly added section
   }
-
-  if (isNaN(nbr) || nbr < 0) {
-    alert('Section number must be a positive number');
-    return 0;
-  }
-
-  var section_id = 's_' + nbr;
-  if (document.getElementById(section_id)) {
-    alert('There is already a section ' + nbr);
-    return 0;
-  }
-
-  var show_nbr = document.getElementById('f_sctn_show_nbr').checked;
-  var name = (show_nbr ? nbr + '- ' : '') + name;
-
-  __art.add_section(section_id, name);
-  __form.add_section(section_id, name);
-  __upd.update_section(); // Updating modified section
 }
 
 export function remove_section() {
-  var lst = document.getElementById('f_sctn_lst');
-  var idx = lst.selectedIndex;
-
-  if (idx == -1) {
-    alert("There\'s no section to remove or you haven\'t selected one");
-    return 0;
-  }
-
   if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
-  __art.remove_section(__form.get_section_id());
-  __form.remove_section();
-  __upd.update_section(); // Updating modified section
+  var sctn_id = __form.remove_section('f-sctn-lst');
+  if (sctn_id) {
+    __art.remove_section(sctn_id);
+    update_section(); // Display list of element corresponding to newly selected section
+  }
 }
 
 export function modify_section() {
-  var lst = document.getElementById('f_sctn_lst');
-  var idx = lst.selectedIndex;
-
-  if (idx == -1) {
-    alert("There\'s no section to modify or you haven\'t selected one");
-    return 0;
+  var sctn_new_info = __form.modify_section('f-sctn-name', 'f-sctn-nbr', 'f-sctn-show-nbr', 'f-sctn-lst');
+  if (sctn_new_info) {
+    __art.modify_section.apply(null, sctn_new_info);
+    update_section();
   }
-
-  var new_name = document.getElementById('f_sctn_name').value;
-  var new_nbr = document.getElementById('f_sctn_nbr').value;
-
-  if (!new_name || !new_nbr) {
-    alert('Name and number must be filled');
-    return 0;
-  }
-
-  if (isNaN(new_nbr) || new_nbr < 0) {
-    alert('Section number must be a positive number');
-    return 0;
-  }
-
-  var section_id = __form.get_section_id();
-  var section_new_id = 's_' + new_nbr;
-  if (section_id != section_new_id && document.getElementById(section_new_id)) {
-    alert('There is already a section ' + new_nbr);
-    return 0;
-  }
-
-  var show_nbr = document.getElementById('f_sctn_show_nbr').checked;
-  var new_name = (show_nbr ? new_nbr + '- ' : '') + new_name;
-
-  __art.modify_section(section_id, section_new_id, new_name);
-  __form.modify_section(section_new_id, new_name);
-  __upd.update_section();
 }
 
 /*** ELEMENTS ***/
 
 export function add_paragraph() {
-  var textarea = document.getElementById('f_el_par'); // Get content of textarea
-
-  var content = textarea.value.trim();
-  if (!content) {
-    alert("Text area for paragraph is empty, please fill it.");
-    return 0;
+  var content = __form.get_value('f-el-par');
+  if (content) {
+    __art.add_paragraph(content, __form.get_selected_item_id('f-sctn-lst')); // Add paragraph to article
+    __form.update_element('f-sctn-lst', 'f-el-lst'); // Update list of elements
   }
-  textarea.value = null; // Clear textarea content
-
-  __art.add_paragraph(content, __form.get_section_id()); // Add paragraph to article
-  __upd.update_element(); // Update list of elements
 }
 
 export function add_subtitle() {
-  var input = document.getElementById('f_el_subttl'); // Get content of text input
-
-  var content = input.value.trim();
-  if (!content) {
-    alert("Input for subtitle is empty, please fill it.");
-    return 0;
+  var content = __form.get_value('f-el-subttl');
+  if (content) {
+    __art.add_subtitle(content, __form.get_selected_item_id('f-sctn-lst')); // Add subtitle to article
+    __form.update_element('f-sctn-lst', 'f-el-lst'); // Update list of elements
   }
-  input.value = null; // Clear input content
-
-  __art.add_subtitle(content, __form.get_section_id()); // Add subtitle to article
-  __upd.update_element(); // Update list of elements
 }
 
 export function add_figure() {
   // Get file in file input
-  var file = document.getElementById('f_el_img');
+  var file = document.getElementById('f-el-img');
   var img_file = file.files[0];
 
   if (!img_file) {
@@ -144,35 +80,26 @@ export function add_figure() {
     return 0;
   }
 
-  var input = document.getElementById('f_el_caption'); // Get content of text input
-  var caption = input.value.trim();
-
+  var caption = __form.get_value('f-el-caption');
 
   // Clear file and text inputs
   file.value = null;
-  input.value = null;
 
-  __art.add_figure(img_file.name, caption, __form.get_section_id()); // Add figure to article
-  __upd.update_element(); // Update list of elements
-  __upd.update_img_button();
+  __art.add_figure(img_file.name, caption, __form.get_selected_item_id('f-sctn-lst')); // Add figure to article
+  __form.update_element('f-sctn-lst', 'f-el-lst'); // Update list of elements
+  __form.update_img_button('f-el-img');
 }
 
-export function add_quote() {
-  var input = document.getElementById('f_el_quote'); // Get content of input
-
-  var content = input.value.trim();
-  if (!content) {
-    alert("Input for quote is empty, please fill it.");
-    return 0;
+export function add_blockquote() {
+  var content = __form.get_value('f-el-quote');
+  if (content) {
+    __art.add_blockquote(content, __form.get_selected_item_id('f-sctn-lst')); // Add quote to article
+    __form.update_element('f-sctn-lst', 'f-el-lst'); // Update list of elements
   }
-  input.value = null; // Clear input content
-
-  __art.add_quote(content, __form.get_section_id()); // Add quote to article
-  __upd.update_element(); // Update list of elements
 }
 
 export function remove_element() {
-  var lst = document.getElementById('f_el_lst');
+  var lst = document.getElementById('f-el-lst');
   var idx = lst.selectedIndex;
 
   if (idx == -1) {
@@ -183,43 +110,54 @@ export function remove_element() {
   if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
   __art.remove_element(lst, idx);
-  __upd.update_element(); // Update list of elements
+  __form.update_element('f-sctn-lst', 'f-el-lst'); // Update list of elements
 }
 
 export function copy_element_content() {
-  var lst = document.getElementById('f_el_lst');
-  var idx = lst.selectedIndex;
-
-  if (idx == -1) {
-    alert("There\'s no element to copy or you haven\'t selected one");
-    return 0;
+  var element = __form.copy_element_content('f-el-lst');
+  if (element) {
+    switch (element.getAttribute('class')) {
+      case 'a-paragraph':
+        document.getElementById('f-el-par').value = element.innerHTML;
+        break;
+      case 'a-subtitle':
+        document.getElementById('f-el-subttl').value = element.innerHTML;
+        break;
+      case 'a-figure':
+        document.getElementById('f-el-caption').value = element.children[1].innerHTML;
+        break;
+      case 'a-blockquote':
+        document.getElementById('f-el-quote').value = element.innerHTML;
+        break;
+      default:
+        alert("Unknown element !");
+    }
   }
-
-  __form.copy_element_content(__form.get_element_id());
 }
+
 
 /*** REFERENCES ***/
 
 export function add_reference() {
-  var name = document.getElementById('f_ref_name').value;
-  var author = document.getElementById('f_ref_author').value;
-  var src = document.getElementById('f_ref_src').value;
-  var year = document.getElementById('f_ref_year').value;
-  var url = document.getElementById('f_ref_url').value;
+  var name = document.getElementById('f-ref-name').value;
+  var author = document.getElementById('f-ref-author').value;
+  var src = document.getElementById('f-ref-src').value;
+  var year = document.getElementById('f-ref-year').value;
+  var url = document.getElementById('f-ref-url').value;
 
   if (!name || !src) {
     alert("Name and source must be filled, other fields are optional");
     return 0;
   }
 
-  var ref_id = 'ref_' + (__form.get_reference_amnt() + 1);
+  var ref_id = 'ref-' + (__form.get_list_size('f-ref-lst') + 1);
 
   __art.add_reference(ref_id, name, author, src, year, url);
   __form.add_reference(ref_id, name, src);
 }
 
 export function modify_reference() {
-  var lst = document.getElementById('f_ref_lst');
+  var lst = document.getElementById('f-ref-lst');
   var idx = lst.selectedIndex;
 
   if (idx == -1) {
@@ -227,23 +165,23 @@ export function modify_reference() {
     return 0;
   }
 
-  var name = document.getElementById('f_ref_name').value;
-  var author = document.getElementById('f_ref_author').value;
-  var src = document.getElementById('f_ref_src').value;
-  var year = document.getElementById('f_ref_year').value;
-  var url = document.getElementById('f_ref_url').value;
+  var name = document.getElementById('f-ref-name').value;
+  var author = document.getElementById('f-ref-author').value;
+  var src = document.getElementById('f-ref-src').value;
+  var year = document.getElementById('f-ref-year').value;
+  var url = document.getElementById('f-ref-url').value;
 
   if (!name || !src) {
     alert("Name and source must be filled, other fields are optional");
     return 0;
   }
 
-  __art.modify_reference(__form.get_reference_id(), name, author, src, year, url);
+  __art.modify_reference(__form.get_selected_item_id('f-ref-lst'), name, author, src, year, url);
   __form.modify_reference(name, src);
 }
 
 export function remove_reference() {
-  var lst = document.getElementById('f_ref_lst');
+  var lst = document.getElementById('f-ref-lst');
   var idx = lst.selectedIndex;
 
   if (idx == -1) {
@@ -253,9 +191,9 @@ export function remove_reference() {
 
   if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
-  __art.remove_reference(__form.get_reference_id());
+  __art.remove_reference(__form.get_selected_item_id('f-ref-lst'));
   __form.remove_reference();
-  __upd.update_reference();
+  __form.update_reference();
 }
 
 /*** SAVES ***/
@@ -271,18 +209,16 @@ export function export_json() {
   __utils.save_file(JSON.stringify(json_data), __cfg.get_json_fname());
 }
 
-export function export_html() {
-  __utils.save_file(__art.get_article(), __cfg.get_html_fname());
-}
+export function export_html() { __utils.save_file(__art.get_article(), __cfg.get_html_fname()); }
 
-/*** UTILS ***/
+/*** TAG INSERTION FOR PARAGRAPH ***/
 
-export function add_italic_to_textarea() { __utils.add_italic(document.getElementById('f_el_par')); }
+export function add_italic() { __form.add_italic_to_text_input('f-el-par'); }
 
-export function add_bold_to_textarea() { __utils.add_bold(document.getElementById('f_el_par')); }
+export function add_bold() { __form.add_bold_to_text_input('f-el-par'); }
 
-export function add_quote_to_textarea() { __utils.add_quote(document.getElementById('f_el_par')); }
+export function add_quote() { __form.add_quote_to_text_input('f-el-par'); }
 
-export function add_link_to_textarea() { __utils.add_link(document.getElementById('f_el_par')); }
+export function add_link() { __form.add_link_to_textarea('f-el-par'); }
 
-export function add_ref_to_textarea() { __utils.add_ref(document.getElementById('f_el_par')); }
+export function add_ref() { __form.add_ref_to_textarea('f-el-par'); }
