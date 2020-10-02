@@ -2,13 +2,22 @@ import * as __utils from './utils.js';
 
 /** GETTERS **/
 
-export function get_value(input_id) { return document.getElementById(input_id).value.trim(); }
+export function get_fname(file_id) {
+  var file = document.getElementById(file_id).files[0];
+  if (!file) return null;
+
+  return file.name;
+}
+
+export function get_value(input_id, format = function(x) {return x; }) { return format(document.getElementById(input_id).value.trim()); }
 
 export function get_selected_item_id(lst_id) {
   var lst = document.getElementById(lst_id);
   var idx = lst.selectedIndex;
 
-  return lst.children[idx].value; // Return id of selected section
+  if (idx == -1) return null;
+
+  return lst.children[idx].value; // Return id (= value) of selected item
 }
 
 export function get_list_size(lst_id) { return document.getElementById(lst_id).children.length; }
@@ -16,6 +25,13 @@ export function get_list_size(lst_id) { return document.getElementById(lst_id).c
 export function get_section_nbr(section_id) { return parseInt(section_id.slice(2, section_id.length)); }
 
 export function get_reference_nbr(ref_id) { return parseInt(ref_id.slice(4, ref_id.length)); }
+
+/** SETTERS **/
+
+export function set_value(input_id, content, format = function(x) {return x; }) {
+  document.getElementById(input_id).value = format(content.trim());
+}
+
 
 /** SECTION MANAGER **/
 
@@ -115,7 +131,7 @@ export function update_section(f_el_mng_id, f_sctn_lst_id) {
 
 /* ELEMENT MANAGER */
 
-export function copy_element_content(el_lst_id) {
+export function copy_element(el_lst_id) {
   var lst = document.getElementById(el_lst_id);
   var idx = lst.selectedIndex;
 

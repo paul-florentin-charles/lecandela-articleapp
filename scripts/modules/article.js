@@ -83,7 +83,7 @@ export function modify_section(section_id, section_new_id, new_name) {
 
 /** ARTICLE ELEMENTS **/
 
-export function remove_element(el_lst, el_idx) { document.getElementById(el_lst.children[el_idx].value).remove(); }
+export function remove_element(element_id) { document.getElementById(element_id).remove(); }
 
 export function add_paragraph(content, section_id) {
   var section = document.getElementById(section_id);
@@ -164,16 +164,16 @@ export function modify_reference(ref_id, name, author, src, year, url) {
   var href = '<a class="link--internal" href="#ast-' + __form.get_reference_nbr(ref_id) + '">&uarr;</a>';
   info.push(href);
   if (url) name = '<a class="link--external" href="' + url + '" target="_blank">' + name + '</a>';
-  name = '<span class="ref-name">' + name + '</span>';
+  name = ' <span class="ref-name">' + name + '</span>';
   info.push(name);
   if (author) {
-    author = '<span class="ref-author">' + author + '</span>';
+    author = ', <span class="ref-author">' + author + '</span>';
     info.push(author);
   }
-  src = '<span class="ref-src">' + src + '</span>';
+  src = ', <span class="ref-src">' + src + '</span>';
   info.push(src);
   if (year) {
-    year = '<span class="ref-year">' + year + '</span>';
+    year = ', <span class="ref-year">' + year + '</span>';
     info.push(year);
   }
 

@@ -14,7 +14,7 @@ export function update_title() { __art.set_inner_html('a-meta-title', __form.get
 
 export function update_author() { __art.set_inner_html('a-meta-author', __form.get_value('f-author')); }
 
-export function update_date() { __art.set_inner_html('a-meta-date', __form.get_value('f-date')); }
+export function update_date() { __art.set_inner_html('a-meta-date', __form.get_value('f-date', __utils.date_US_to_EU)); }
 
 export function update_section() {
   if (__form.update_section('f-el', 'f-sctn-lst'))  {
@@ -71,23 +71,13 @@ export function add_subtitle() {
 }
 
 export function add_figure() {
-  // Get file in file input
-  var file = document.getElementById('f-el-img');
-  var img_file = file.files[0];
-
-  if (!img_file) {
-    alert("No file has been uploaded yet, upload one please.");
-    return 0;
-  }
-
+  var img_name = __form.get_fname('f-el-img');
   var caption = __form.get_value('f-el-caption');
-
-  // Clear file and text inputs
-  file.value = null;
-
-  __art.add_figure(img_file.name, caption, __form.get_selected_item_id('f-sctn-lst')); // Add figure to article
-  __form.update_element('f-sctn-lst', 'f-el-lst'); // Update list of elements
-  __form.update_img_button('f-el-img');
+  if (img_name) {
+    __art.add_figure(img_name, caption, __form.get_selected_item_id('f-sctn-lst')); // Add figure to article
+    __form.update_element('f-sctn-lst', 'f-el-lst'); // Update list of elements
+    __form.update_img_button('f-el-img');
+  }
 }
 
 export function add_blockquote() {
@@ -99,35 +89,30 @@ export function add_blockquote() {
 }
 
 export function remove_element() {
-  var lst = document.getElementById('f-el-lst');
-  var idx = lst.selectedIndex;
-
-  if (idx == -1) {
-    alert("There\'s no element to remove or you haven\'t selected one");
-    return 0;
-  }
-
   if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
-  __art.remove_element(lst, idx);
-  __form.update_element('f-sctn-lst', 'f-el-lst'); // Update list of elements
+  var element_id = __form.get_selected_item_id('f-el-lst');
+  if (element_id) {
+    __art.remove_element(element_id);
+    __form.update_element('f-sctn-lst', 'f-el-lst'); // Update list of elements
+  }
 }
 
 export function copy_element_content() {
-  var element = __form.copy_element_content('f-el-lst');
+  var element = __form.copy_element('f-el-lst');
   if (element) {
     switch (element.getAttribute('class')) {
       case 'a-paragraph':
-        document.getElementById('f-el-par').value = element.innerHTML;
+        __form.set_value('f-el-par', element.innerHTML);
         break;
       case 'a-subtitle':
-        document.getElementById('f-el-subttl').value = element.innerHTML;
+        __form.set_value('f-el-subttl', element.innerHTML);
         break;
       case 'a-figure':
-        document.getElementById('f-el-caption').value = element.children[1].innerHTML;
+        __form.set_value('f-el-caption', element.children[1].innerHTML);
         break;
       case 'a-blockquote':
-        document.getElementById('f-el-quote').value = element.innerHTML;
+        __form.set_value('f-el-quote', element.innerHTML);
         break;
       default:
         alert("Unknown element !");
@@ -135,65 +120,43 @@ export function copy_element_content() {
   }
 }
 
-
 /*** REFERENCES ***/
 
 export function add_reference() {
-  var name = document.getElementById('f-ref-name').value;
-  var author = document.getElementById('f-ref-author').value;
-  var src = document.getElementById('f-ref-src').value;
-  var year = document.getElementById('f-ref-year').value;
-  var url = document.getElementById('f-ref-url').value;
+  var name = __form.get_value('f-ref-name');
+  var author = __form.get_value('f-ref-author');
+  var src = __form.get_value('f-ref-src');
+  var year = __form.get_value('f-ref-year');
+  var url = __form.get_value('f-ref-url');
 
-  if (!name || !src) {
-    alert("Name and source must be filled, other fields are optional");
-    return 0;
+  if (name && src) {
+    var ref_id = 'ref-' + (__form.get_list_size('f-ref-lst') + 1);
+    __art.add_reference(ref_id, name, author, src, year, url);
+    __form.add_reference(ref_id, name, src);
   }
-
-  var ref_id = 'ref-' + (__form.get_list_size('f-ref-lst') + 1);
-
-  __art.add_reference(ref_id, name, author, src, year, url);
-  __form.add_reference(ref_id, name, src);
 }
 
 export function modify_reference() {
-  var lst = document.getElementById('f-ref-lst');
-  var idx = lst.selectedIndex;
+  var name = __form.get_value('f-ref-name');
+  var author = __form.get_value('f-ref-author');
+  var src = __form.get_value('f-ref-src');
+  var year = __form.get_value('f-ref-year');
+  var url = __form.get_value('f-ref-url');
 
-  if (idx == -1) {
-    alert("There\'s no reference to remove or you haven\'t selected one");
-    return 0;
+  if (__form.get_list_size('f-ref-lst') > 0 && name && src) {
+    __art.modify_reference(__form.get_selected_item_id('f-ref-lst'), name, author, src, year, url);
+    __form.modify_reference(name, src);
   }
-
-  var name = document.getElementById('f-ref-name').value;
-  var author = document.getElementById('f-ref-author').value;
-  var src = document.getElementById('f-ref-src').value;
-  var year = document.getElementById('f-ref-year').value;
-  var url = document.getElementById('f-ref-url').value;
-
-  if (!name || !src) {
-    alert("Name and source must be filled, other fields are optional");
-    return 0;
-  }
-
-  __art.modify_reference(__form.get_selected_item_id('f-ref-lst'), name, author, src, year, url);
-  __form.modify_reference(name, src);
 }
 
 export function remove_reference() {
-  var lst = document.getElementById('f-ref-lst');
-  var idx = lst.selectedIndex;
-
-  if (idx == -1) {
-    alert("There\'s no reference to remove or you haven\'t selected one");
-    return 0;
-  }
-
   if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
-  __art.remove_reference(__form.get_selected_item_id('f-ref-lst'));
-  __form.remove_reference();
-  __form.update_reference();
+  if (__form.get_list_size('f-ref-lst') > 0) {
+    __art.remove_reference(__form.get_selected_item_id('f-ref-lst'));
+    __form.remove_reference();
+    __form.update_reference();
+  }
 }
 
 /*** SAVES ***/
