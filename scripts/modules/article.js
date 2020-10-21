@@ -1,11 +1,11 @@
-import * as __utils from './utils.js';
+import * as __utls from './utils.js';
 import * as __cfg from './config.js';
 import * as __form from './form.js';
 
 /** GETTERS **/
 
 export function get_article() {
-  var art =  document.getElementById('article').cloneNode(true);
+  var art =  __utls.byId('article').cloneNode(true);
 
   // Removing all ids of elements and sections
   for (var par of art.getElementsByClassName('a-paragraph')) {
@@ -27,13 +27,9 @@ export function get_article() {
   return art.innerHTML;
 }
 
-/** SETTERS **/
-
-export function set_inner_html(tag_id, content) { document.getElementById(tag_id).innerHTML = content; }
-
 /** ARTICLE SECTIONS **/
 
-export function remove_section(section_id) { document.getElementById(section_id).remove(); }
+export function remove_section(section_id) { __utls.byId(section_id).remove(); }
 
 export function add_section(section_id, name) {
   var title = document.createElement('h2');
@@ -47,7 +43,7 @@ export function add_section(section_id, name) {
   section.appendChild(title);
 
   // Adding section to core of article
-  var core = document.getElementById('a-core');
+  var core = __utls.byId('a-core');
 
   var inserted = false;
   for (var sctn of core.children) {
@@ -61,14 +57,14 @@ export function add_section(section_id, name) {
 }
 
 export function modify_section(section_id, section_new_id, new_name) {
-  var section = document.getElementById(section_id);
+  var section = __utls.byId(section_id);
   var title = section.children[0];
 
   title.innerHTML = new_name;
   section.id = section_new_id;
 
   // Re-adding section to core of article
-  var core = document.getElementById('a-core');
+  var core = __utls.byId('a-core');
 
   var inserted = false;
   for (var sctn of core.children) {
@@ -83,34 +79,34 @@ export function modify_section(section_id, section_new_id, new_name) {
 
 /** ARTICLE ELEMENTS **/
 
-export function remove_element(element_id) { document.getElementById(element_id).remove(); }
+export function remove_element(element_id) { __utls.byId(element_id).remove(); }
 
 export function add_paragraph(content, section_id) {
-  var section = document.getElementById(section_id);
+  var section = __utls.byId(section_id);
 
   var paragraph = document.createElement('p'); // Create a paragraph
   paragraph.innerHTML = content;
 
-  paragraph.id = __utils.unused_id(section_id + '_'); // Set up a random id
+  paragraph.id = __utls.unused_id(section_id + '_'); // Set up a random id
 
   paragraph.setAttribute('class', 'a-paragraph');
   section.appendChild(paragraph);
 }
 
 export function add_subtitle(content, section_id) {
-  var section = document.getElementById(section_id);
+  var section = __utls.byId(section_id);
 
   var subtitle = document.createElement('h3');
   subtitle.innerHTML = content;
 
-  subtitle.id = __utils.unused_id(section_id + '_'); // Set up a random id
+  subtitle.id = __utls.unused_id(section_id + '_'); // Set up a random id
 
   subtitle.setAttribute('class', 'a-subtitle');
   section.appendChild(subtitle);
 }
 
 export function add_figure(img_name, caption, section_id) {
-  var section = document.getElementById(section_id);
+  var section = __utls.byId(section_id);
 
   // Create and set up img tag
   var img = document.createElement('img');
@@ -123,7 +119,7 @@ export function add_figure(img_name, caption, section_id) {
 
   // Create and set up figure tag
   var figure = document.createElement('figure');
-  figure.id = __utils.unused_id(section_id + '_'); // Set up a random id
+  figure.id = __utls.unused_id(section_id + '_'); // Set up a random id
   figure.setAttribute('class', 'a-figure');
 
   // Append tags
@@ -133,12 +129,12 @@ export function add_figure(img_name, caption, section_id) {
 }
 
 export function add_blockquote(content, section_id) {
-  var section = document.getElementById(section_id);
+  var section = __utls.byId(section_id);
 
   var quote = document.createElement('blockquote'); // Create a blockquote
   quote.innerHTML = content;
 
-  quote.id = __utils.unused_id(section_id + '_'); // Set up a random id
+  quote.id = __utls.unused_id(section_id + '_'); // Set up a random id
 
   quote.setAttribute('class', 'a-blockquote');
   section.appendChild(quote);
@@ -150,18 +146,18 @@ export function add_reference(ref_id, name, author, src, year, url) {
   var ref = document.createElement('li');
   ref.id = ref_id;
 
-  var refs = document.getElementById('a-references');
+  var refs = __utls.byId('a-references');
   refs.appendChild(ref);
 
   modify_reference(ref_id, name, author, src, year, url);
 }
 
 export function modify_reference(ref_id, name, author, src, year, url) {
-  var ref = document.getElementById(ref_id);
+  var ref = __utls.byId(ref_id);
 
   var info = [];
 
-  var href = '<a class="link--internal" href="#ast-' + __form.get_reference_nbr(ref_id) + '">&uarr;</a>';
+  var href = '<a class="link--internal" href="#ast-' + __utls.str_to_int(ref_id, 4) + '">&uarr;</a>';
   info.push(href);
   if (url) name = '<a class="link--external" href="' + url + '" target="_blank">' + name + '</a>';
   name = ' <span class="ref-name">' + name + '</span>';
@@ -180,4 +176,4 @@ export function modify_reference(ref_id, name, author, src, year, url) {
   ref.innerHTML = info.join('');
 }
 
-export function remove_reference(ref_id) { document.getElementById(ref_id).remove(); }
+export function remove_reference(ref_id) { __utls.byId(ref_id).remove(); }

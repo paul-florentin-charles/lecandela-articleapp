@@ -1,53 +1,24 @@
-import * as __utils from './utils.js';
+import * as __utls from './utils.js';
 
 /** GETTERS **/
 
-export function get_fname(file_id) {
-  var file = document.getElementById(file_id).files[0];
-  if (!file) return null;
-
-  return file.name;
-}
-
-export function get_value(input_id, format = function(x) {return x; }) { return format(document.getElementById(input_id).value.trim()); }
-
-export function get_selected_item_id(lst_id) {
-  var lst = document.getElementById(lst_id);
-  var idx = lst.selectedIndex;
-
-  if (idx == -1) return null;
-
-  return lst.children[idx].value; // Return id (= value) of selected item
-}
-
-export function get_list_size(lst_id) { return document.getElementById(lst_id).children.length; }
-
-export function get_section_nbr(section_id) { return parseInt(section_id.slice(2, section_id.length)); }
-
-export function get_reference_nbr(ref_id) { return parseInt(ref_id.slice(4, ref_id.length)); }
-
-/** SETTERS **/
-
-export function set_value(input_id, content, format = function(x) {return x; }) {
-  document.getElementById(input_id).value = format(content.trim());
-}
-
+export function get_section_nbr(section_id) { return __utls.str_to_int(section_id, 2); }
 
 /** SECTION MANAGER **/
 
 export function add_section(sctn_name_id, sctn_nbr_id, sctn_show_nbr_id, sctn_lst_id) {
-  var name = document.getElementById(sctn_name_id).value;
-  var nbr = document.getElementById(sctn_nbr_id).value;
+  var name = __utls.byId(sctn_name_id).value;
+  var nbr = __utls.byId(sctn_nbr_id).value;
 
   if (!name || !nbr || isNaN(nbr) || parseInt(nbr) < 0) return null; // Fields incomplete or incorrectly filled
 
   var section_id = 's-' + nbr;
-  if (document.getElementById(section_id)) return null; // Section already exists
+  if (__utls.byId(section_id)) return null; // Section already exists
 
-  var show_nbr = document.getElementById(sctn_show_nbr_id).checked;
+  var show_nbr = __utls.byId(sctn_show_nbr_id).checked;
   var name = (show_nbr ? nbr + ' - ' : '') + name;
 
-  var lst = document.getElementById(sctn_lst_id); // Getting list of sections
+  var lst = __utls.byId(sctn_lst_id); // Getting list of sections
 
   // Creating option with its right attributes
   var option = document.createElement('option');
@@ -64,14 +35,14 @@ export function add_section(sctn_name_id, sctn_nbr_id, sctn_show_nbr_id, sctn_ls
   }
   if (!inserted) lst.appendChild(option); // Insert as last option
 
-  document.getElementById(sctn_name_id).value = null; // Flushing name input
-  document.getElementById(sctn_nbr_id).value = parseInt(document.getElementById(sctn_nbr_id).value) + 1; // Setting next value ready for section number
+  __utls.byId(sctn_name_id).value = null; // Flushing name input
+  __utls.byId(sctn_nbr_id).value = parseInt(__utls.byId(sctn_nbr_id).value) + 1; // Setting next value ready for section number
 
   return [section_id, name];
 }
 
 export function remove_section(sctn_lst_id) {
-  var lst = document.getElementById(sctn_lst_id);
+  var lst = __utls.byId(sctn_lst_id);
   var idx = lst.selectedIndex;
   var sctn_id = lst.children[idx].value;
 
@@ -84,22 +55,22 @@ export function remove_section(sctn_lst_id) {
 }
 
 export function modify_section(sctn_name_id, sctn_nbr_id, sctn_show_nbr_id, sctn_lst_id) {
-  var lst = document.getElementById(sctn_lst_id);
+  var lst = __utls.byId(sctn_lst_id);
   var idx = lst.selectedIndex;
 
   if (idx == -1) return null;
 
-  var new_name = document.getElementById(sctn_name_id).value,
-      new_nbr = document.getElementById(sctn_nbr_id).value;
+  var new_name = __utls.byId(sctn_name_id).value,
+      new_nbr = __utls.byId(sctn_nbr_id).value;
   if (!new_name || !new_nbr || isNaN(new_nbr) || parseInt(new_nbr) < 0) return null; // Fields incomplete or incorrectly filled
 
   var section_id = lst.children[idx].value,
       section_new_id = 's-' + new_nbr;
-  if (section_id != section_new_id && document.getElementById(section_new_id)) return null; // New id correspond to a distinct already existing section
+  if (section_id != section_new_id && __utls.byId(section_new_id)) return null; // New id correspond to a distinct already existing section
 
   lst.removeChild(lst.children[idx]); // Removing section from section list
 
-  var show_nbr = document.getElementById(sctn_show_nbr_id).checked;
+  var show_nbr = __utls.byId(sctn_show_nbr_id).checked;
   new_name = (show_nbr ? new_nbr + ' - ' : '') + new_name;
 
   // Creating option with its right attributes
@@ -117,14 +88,14 @@ export function modify_section(sctn_name_id, sctn_nbr_id, sctn_show_nbr_id, sctn
   }
   if (!inserted) lst.appendChild(option); // Insert as last option
 
-  document.getElementById(sctn_name_id).value = null; // Flushing name input
+  __utls.byId(sctn_name_id).value = null; // Flushing name input
 
   return [section_id, section_new_id, new_name];
 }
 
 export function update_section(f_el_mng_id, f_sctn_lst_id) {
-  var no_section = (document.getElementById(f_sctn_lst_id).selectedIndex == -1);
-  document.getElementById(f_el_mng_id).style.display = (no_section ? 'none' : 'block');
+  var no_section = (__utls.byId(f_sctn_lst_id).selectedIndex == -1);
+  __utls.byId(f_el_mng_id).style.display = (no_section ? 'none' : 'block');
 
   return !no_section;
 }
@@ -132,23 +103,23 @@ export function update_section(f_el_mng_id, f_sctn_lst_id) {
 /* ELEMENT MANAGER */
 
 export function copy_element(el_lst_id) {
-  var lst = document.getElementById(el_lst_id);
+  var lst = __utls.byId(el_lst_id);
   var idx = lst.selectedIndex;
 
   if (idx == -1) return null;
 
   var el_id = lst.children[idx].value;
-  var element = document.getElementById(el_id);
+  var element = __utls.byId(el_id);
 
   return element;
 }
 
 export function update_element(f_sctn_lst_id, f_el_lst_id) {
-  var s_id = get_selected_item_id(f_sctn_lst_id);
+  var s_id = __utls.get_selected_item_value(f_sctn_lst_id);
 
   // Get list of elements of section 's_id' apart from the first one (which is the title)
-  var elements = __utils.get_children(document.getElementById(s_id), 1);
-  var el_lst = document.getElementById(f_el_lst_id);
+  var elements = __utls.get_children(s_id, 1);
+  var el_lst = __utls.byId(f_el_lst_id);
 
   // Purge element list
   el_lst.length = 0;
@@ -157,62 +128,55 @@ export function update_element(f_sctn_lst_id, f_el_lst_id) {
   for (var [idx, element] of elements.entries()) {
     var option = document.createElement('option');
     option.value = element.id;
-    option.innerHTML = (idx + 1) + ". " + __utils.class2name[element.getAttribute('class')] + ' : ' + (element.children[1] ? element.children[1] : element).innerHTML.slice(0, 15) + '...';
+    option.innerHTML = (idx + 1) + ". " + __utls.class2name[element.getAttribute('class')] + ' : ' + (element.children[1] ? element.children[1] : element).innerHTML.slice(0, 15) + '...';
     el_lst.appendChild(option);
   }
 }
 
-export function update_img_button(img_id) { __utils.update_img_label(document.getElementById(img_id)); }
-
 export function add_italic_to_text_input(input_id) {
-  var input = document.getElementById(input_id);
   var tag_name = 'i';
   var attr_dict = {"class": "italic"};
 
-  __utils.add_tag_to_text_input(input, tag_name, attr_dict);
+  __utls.add_tag_to_text_input(input_id, tag_name, attr_dict);
 }
 
 export function add_bold_to_text_input(input_id) {
-  var input = document.getElementById(input_id);
   var tag_name = 'b';
   var attr_dict = {"class": "bold"};
 
-  __utils.add_tag_to_text_input(input, tag_name, attr_dict);
+  __utls.add_tag_to_text_input(input_id, tag_name, attr_dict);
 }
 
 export function add_quote_to_text_input(input_id) {
-  var input = document.getElementById(input_id);
   var tag_name = 'q';
   var attr_dict = {"class": "quote"};
 
-  __utils.add_tag_to_text_input(input, tag_name, attr_dict);
+  __utls.add_tag_to_text_input(input_id, tag_name, attr_dict);
 }
 
 export function add_link_to_textarea(input_id) {
-  var input = document.getElementById(input_id);
   var tag_name = 'a';
   var attr_dict = {"class": "link--external", "href": "", "target": "_blank"};
 
-  __utils.add_tag_to_text_input(input, tag_name, attr_dict);
+  __utls.add_tag_to_text_input(input_id, tag_name, attr_dict);
 }
 
 export function add_ref_to_textarea(input_id) {
-  var input = document.getElementById(input_id);
   var tag_name = 'sup';
   var attr_dict = {"class": "asterisk"};
 
-  __utils.add_tag_to_text_input(input, tag_name, attr_dict);
+  __utls.add_tag_to_text_input(input_id, tag_name, attr_dict);
 
   tag_name = 'a';
   attr_dict = {"id": "ast-?", "class": "link--internal", "href": "#ref-?"};
 
-  __utils.add_tag_to_text_input(input, tag_name, attr_dict, "[?]");
+  __utls.add_tag_to_text_input(input_id, tag_name, attr_dict, "[?]");
 }
 
 /* REFERENCE MANAGER */
 
 export function add_reference(ref_id, name, src) {
-  var lst = document.getElementById('f-ref-lst'); // Getting list of refrences
+  var lst = __utls.byId('f-ref-lst'); // Getting list of refrences
 
   // Creating option with its right attributes
   var option = document.createElement('option');
@@ -223,11 +187,11 @@ export function add_reference(ref_id, name, src) {
 
   // Flushing input fields
   var ids = ['f-ref-name', 'f-ref-author', 'f-ref-src', 'f-ref-year', 'f-ref-url']
-  for (var id of ids) document.getElementById(id).value = null;
+  for (var id of ids) __utls.byId(id).value = null;
 }
 
 export function modify_reference(name, src) {
-  var lst = document.getElementById('f-ref-lst'); // Getting list of references
+  var lst = __utls.byId('f-ref-lst'); // Getting list of references
   var idx = lst.selectedIndex;
   var option = lst.children[idx];
 
@@ -235,24 +199,24 @@ export function modify_reference(name, src) {
 
   // Flushing input fields
   var ids = ['f-ref-name', 'f-ref-author', 'f-ref-src', 'f-ref-year', 'f-ref-url']
-  for (var id of ids) document.getElementById(id).value = null;
+  for (var id of ids) __utls.byId(id).value = null;
 }
 
 export function remove_reference() {
-  var lst = document.getElementById('f-ref-lst'); // Getting list of references
+  var lst = __utls.byId('f-ref-lst'); // Getting list of references
   var idx = lst.selectedIndex;
 
   lst.removeChild(lst.children[idx]); // Removing reference from reference list
 }
 
 export function update_reference() {
-  var lst = document.getElementById('f-ref-lst');
+  var lst = __utls.byId('f-ref-lst');
 
   var cpt = 1;
   for (var opt of lst.children) {
     var ref_new_id = 'ref-' + cpt;
     // Modify id in article
-    var ref = document.getElementById(opt.value);
+    var ref = __utls.byId(opt.value);
     ref.id = ref_new_id;
     ref.children[0].setAttribute('href', '#ast-' + cpt);
 
