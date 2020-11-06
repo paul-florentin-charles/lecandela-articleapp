@@ -203,22 +203,22 @@ export function modify_reference(name, src) {
 }
 
 export function remove_reference() {
-  var lst = __utls.byId('f-ref-lst'); // Getting list of references
-  var idx = lst.selectedIndex;
+  var lst = $('#f-ref-lst'); // Getting list of references
+  var idx = $(lst).prop('selectedIndex');
 
-  lst.removeChild(lst.children[idx]); // Removing reference from reference list
+  $(lst).prop('children')[idx].remove(); // Removing reference from reference list
 }
 
 export function update_reference() {
-  var lst = __utls.byId('f-ref-lst');
+  var lst = $('#f-ref-lst');
 
   var cpt = 1;
-  for (var opt of lst.children) {
+  for (var opt of $(lst).prop('children')) {
     var ref_new_id = 'ref-' + cpt;
     // Modify id in article
-    var ref = __utls.byId(opt.value);
-    ref.id = ref_new_id;
-    ref.children[0].setAttribute('href', '#ast-' + cpt);
+    var ref = $('#' + opt.value);
+    $(ref).attr('id', ref_new_id);
+    $(ref).prop('children')[0].setAttribute('href', '#ast-' + cpt);
 
     // Modify option value
     opt.value = ref_new_id;

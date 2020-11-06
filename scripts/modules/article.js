@@ -4,32 +4,26 @@ import * as __form from './form.js';
 
 /** GETTERS **/
 
+export function get_title() { return __utls.get_tag_innerHTML('a-meta-title'); }
+
+export function get_author() { return __utls.get_tag_innerHTML('a-meta-author'); }
+
+export function get_date() { return __utls.get_tag_innerHTML('a-meta-date'); }
+
 export function get_article() {
-  var art =  __utls.byId('article').cloneNode(true);
+  var art = $('#article').clone(true);
 
   // Removing all ids of elements and sections
-  for (var par of art.getElementsByClassName('a-paragraph')) {
-    par.removeAttribute('id');
-  }
-  for (var sub of art.getElementsByClassName('a-subtitle')) {
-    sub.removeAttribute('id');
-  }
-  for (var fig of art.getElementsByClassName('a-figure')) {
-    fig.removeAttribute('id');
-  }
-  for (var quo of art.getElementsByClassName('a-blockquote')) {
-    quo.removeAttribute('id');
-  }
-  for (var sec of art.getElementsByClassName('a-section')) {
-    sec.removeAttribute('id');
+  for (var el of $('.a-paragraph, .a-subtitle, .a-figure, .a-blockquote, .a-section', art)) {
+    $(el).removeAttr('id');
   }
 
-  return art.innerHTML;
+  return $(art).prop('innerHTML');
 }
 
 /** ARTICLE SECTIONS **/
 
-export function remove_section(section_id) { __utls.byId(section_id).remove(); }
+export function remove_section(section_id) { $('#' + section_id).remove(); }
 
 export function add_section(section_id, name) {
   var title = document.createElement('h2');
@@ -143,11 +137,11 @@ export function add_blockquote(content, section_id) {
 /** ARTICLE REFERENCES **/
 
 export function add_reference(ref_id, name, author, src, year, url) {
-  var ref = document.createElement('li');
-  ref.id = ref_id;
+  var ref = $('<li>');
+  $(ref).attr('id', ref_id);
 
-  var refs = __utls.byId('a-references');
-  refs.appendChild(ref);
+  var refs = $('#a-references');
+  $(refs).append(ref);
 
   modify_reference(ref_id, name, author, src, year, url);
 }
@@ -176,4 +170,4 @@ export function modify_reference(ref_id, name, author, src, year, url) {
   ref.innerHTML = info.join('');
 }
 
-export function remove_reference(ref_id) { __utls.byId(ref_id).remove(); }
+export function remove_reference(ref_id) { $('#' + ref_id).remove(); }

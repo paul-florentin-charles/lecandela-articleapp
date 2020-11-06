@@ -10,3 +10,8 @@ Small webapp to write articles and exporting them in html format. You can then u
 ## Requirements
 
 * HTTP server to use *javascript* modules ; I use **atom** with the extension [atom-live-server](https://atom.io/packages/atom-live-server).
+
+## Libraries
+
+* FileSaver
+* JQuery

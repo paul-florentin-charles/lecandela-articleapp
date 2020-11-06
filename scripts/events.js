@@ -10,63 +10,57 @@ import * as __api from './modules/api.js'
 /* Load several elements in the article preview and reset form values
 ** Event is triggered when loading the page (refreshing or opening it)
 */
-window.onload = function() { __api.init(); };
-
-/* Specific events */
-
-var byId = document.getElementById.bind(document); // Useful alias
+$(window).on("load", function() { __api.init(); });
 
 /** Metadata **/
 
 // TITLE
-byId('f-title').onkeyup = function() { __api.update_title(); };
-byId('f-title').onkeydown = function() { __api.update_title(); };
+$('#f-title').on("keyup keydown", function() { __api.update_title(); });
 
 // AUTHOR
-byId('f-author').onkeyup = function() { __api.update_author(); };
-byId('f-author').onkeydown = function() { __api.update_author(); };
+$('#f-author').on("keyup keydown", function() { __api.update_author(); });
 
 // DATE
-byId('f-date').onchange = function() { __api.update_date(); };
+$('#f-date').on("change", function() { __api.update_date(); });
 
 /** Section manager **/
 
-byId('f-sctn-lst').onchange = function() { __api.update_section(); }; // LIST
+$('#f-sctn-lst').on("change", function() { __api.update_section(); }); // LIST
 
-byId('f-sctn-add').onclick = function() { __api.add_section(); }; // ADD
-byId('f-sctn-mod').onclick = function() { __api.modify_section(); }; // MODIFY
-byId('f-sctn-rm').onclick = function() { __api.remove_section(); }; // REMOVAL
+$('#f-sctn-add').on("click", function() { __api.add_section(); }); // ADD
+$('#f-sctn-mod').on("click", function() { __api.modify_section(); }); // MODIFY
+$('#f-sctn-rm').on("click", function() { __api.remove_section(); }); // REMOVAL
 
 /** Element manager **/
 
 // Paragraph styling
-byId('f-el-par-it').onclick = function() { __api.add_italic(); }; // ITALIC
-byId('f-el-par-bold').onclick = function() { __api.add_bold(); }; // BOLD
-byId('f-el-par-quote').onclick = function() { __api.add_quote(); }; // QUOTE
-byId('f-el-par-link').onclick = function() { __api.add_link(); }; // LINK
-byId('f-el-par-ref').onclick = function() { __api.add_ref(); }; // REFERENCE
+$('#f-el-par-it').on("click", function() { __api.add_italic(); }); // ITALIC
+$('#f-el-par-bold').on("click", function() { __api.add_bold(); }); // BOLD
+$('#f-el-par-quote').on("click", function() { __api.add_quote(); }); // QUOTE
+$('#f-el-par-link').on("click", function() { __api.add_link(); }); // LINK
+$('#f-el-par-ref').on("click", function() { __api.add_ref(); }); // REFERENCE
 
 // Add elements
-byId('f-el-add-par').onclick = function() { __api.add_paragraph(); }; // PARAGRAPH
+$('#f-el-add-par').on("click", function() { __api.add_paragraph(); }); // PARAGRAPH
 
-byId('f-el-add-subttl').onclick = function() { __api.add_subtitle(); }; // SUBTITLE
+$('#f-el-add-subttl').on("click", function() { __api.add_subtitle(); }); // SUBTITLE
 
-byId('f-el-img').onchange = function() { __api.update_img_button(); }; // IMAGE
-byId('f-el-add-fig').onclick = function() { __api.add_figure(); }; // FIGURE
+$('#f-el-img').on("change", function() { __api.update_img_button(); }); // IMAGE
+$('#f-el-add-fig').on("click", function() { __api.add_figure(); }); // FIGURE
 
-byId('f-el-add-quote').onclick = function() { __api.add_blockquote(); }; // BLOCKQUOTE
+$('#f-el-add-quote').on("click", function() { __api.add_blockquote(); }); // BLOCKQUOTE
 
 // Remove/copy elements
-byId('f-el-copy-element').onclick = function() { __api.copy_element_content(); }; // COPY
-byId('f-el-rm-element').onclick = function() { __api.remove_element(); }; // REMOVAL
+$('#f-el-copy-element').on("click", function() { __api.copy_element_content(); }); // COPY
+$('#f-el-rm-element').on("click", function() { __api.remove_element(); }); // REMOVAL
 
 /** Reference manager **/
 
-byId('f-ref-add').onclick = function() {__api.add_reference(); } // ADD
-byId('f-ref-mod').onclick = function() {__api.modify_reference(); } // MODIFY
-byId('f-ref-rm').onclick = function() {__api.remove_reference(); } // REMOVAL
+$('#f-ref-add').on("click", function() {__api.add_reference(); }); // ADD
+$('#f-ref-mod').on("click", function() {__api.modify_reference(); }); // MODIFY
+$('#f-ref-rm').on("click", function() {__api.remove_reference(); }); // REMOVAL
 
 /** Export **/
 
-byId('f-save-html').onclick = function() { __api.export_html(); }; // HTML
-byId('f-save-json').onclick = function() { __api.export_json(); }; // JSON
+$('#f-save-html').on("click", function() { __api.export_html(); }); // HTML
+$('#f-save-json').on("click", function() { __api.export_json(); }); // JSON

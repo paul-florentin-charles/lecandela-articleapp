@@ -28,7 +28,9 @@ export function update_section() {
   }
 }
 
-export function update_img_button() { __utls.update_img_label('f-el-img'); }
+export function update_img_button() {
+  __utls.update_img_label('f-el-img');
+}
 
 /*** SECTIONS ***/
 
@@ -122,6 +124,7 @@ export function copy_element_content() {
         break;
       default:
         alert("Unknown element !");
+        break;
     }
   }
 }
@@ -169,9 +172,9 @@ export function remove_reference() {
 
 export function export_json() {
   var json_data = {
-    "title": __form.get_title(),
-    "author": __form.get_author(),
-    "date": __form.get_date(),
+    "title": __art.get_title(),
+    "author": __art.get_author(),
+    "date": __art.get_date(),
     "content": __art.get_article()
   };
 
