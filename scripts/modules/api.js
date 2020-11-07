@@ -108,19 +108,19 @@ export function remove_element() {
 
 export function copy_element_content() {
   var element = __form.copy_element('f-el-lst');
-  if (element) {
-    switch (element.getAttribute('class')) {
+  if (element.length) {
+    switch (element.prop('class')) {
       case 'a-paragraph':
-        __utls.set_tag_value('f-el-par', element.innerHTML);
+        __utls.set_tag_value('f-el-par', element.html());
         break;
       case 'a-subtitle':
-        __utls.set_tag_value('f-el-subttl', element.innerHTML);
+        __utls.set_tag_value('f-el-subttl', element.html());
         break;
       case 'a-figure':
-        __utls.set_tag_value('f-el-caption', element.children[1].innerHTML);
+        __utls.set_tag_value('f-el-caption', $(element.children()[1]).html());
         break;
       case 'a-blockquote':
-        __utls.set_tag_value('f-el-quote', element.innerHTML);
+        __utls.set_tag_value('f-el-quote', element.html());
         break;
       default:
         alert("Unknown element !");

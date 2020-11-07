@@ -1,6 +1,5 @@
 import * as __utls from './utils.js';
 import * as __cfg from './config.js';
-import * as __form from './form.js';
 
 /** GETTERS **/
 
@@ -18,7 +17,7 @@ export function get_article() {
     $(el).removeAttr('id');
   }
 
-  return $(art).prop('innerHTML');
+  return art.html();
 }
 
 /** ARTICLE SECTIONS **/
@@ -26,128 +25,81 @@ export function get_article() {
 export function remove_section(section_id) { $('#' + section_id).remove(); }
 
 export function add_section(section_id, name) {
-  var title = document.createElement('h2');
-  title.setAttribute('class', 'a-title');
-  title.innerHTML = name;
+  var section = $('<div class="a-section" id="' + section_id + '">');
+  var title = $('<h2 class="a-title">' + name + '</h2>');
 
-  var section = document.createElement('div');
-  section.setAttribute('class', 'a-section');
-  section.id = section_id;
-
-  section.appendChild(title);
-
-  // Adding section to core of article
-  var core = __utls.byId('a-core');
-
-  var inserted = false;
-  for (var sctn of core.children) {
-    if (__form.get_section_nbr(sctn.id) > __form.get_section_nbr(section.id)) {
-      core.insertBefore(section, sctn); // Insert before higher number section
-      inserted = true;
-      break;
-    }
-  }
-  if (!inserted) core.appendChild(section);
+  section.append(title);
+  insert_section(section);
 }
 
 export function modify_section(section_id, section_new_id, new_name) {
-  var section = __utls.byId(section_id);
-  var title = section.children[0];
+  var section = $('#' + section_id);
+  section.attr('id', section_new_id);
 
-  title.innerHTML = new_name;
-  section.id = section_new_id;
+  var title = $(section.children()[0]);
+  title.html(new_name);
 
-  // Re-adding section to core of article
-  var core = __utls.byId('a-core');
+  insert_section(section);
+}
+
+function insert_section(section) {
+  var core = $('#a-core');
 
   var inserted = false;
-  for (var sctn of core.children) {
-    if (__form.get_section_nbr(sctn.id) > __form.get_section_nbr(section.id)) {
-      core.insertBefore(section, sctn); // Insert before higher number section
+  for (var sctn of core.children()) {
+    if (__utls.str_to_int($(sctn).attr('id'), 2) > __utls.str_to_int(section.attr('id'), 2)) {
+      $(sctn).before(section); // Insert before higher number section
       inserted = true;
       break;
     }
   }
-  if (!inserted) core.appendChild(section);
+  if (!inserted) core.append(section);
 }
 
 /** ARTICLE ELEMENTS **/
 
-export function remove_element(element_id) { __utls.byId(element_id).remove(); }
+export function remove_element(element_id) { $('#' + element_id).remove(); }
 
 export function add_paragraph(content, section_id) {
-  var section = __utls.byId(section_id);
+  var paragraph = $('<p id="' + __utls.unused_id() + '" class="a-paragraph">' + content + '</p>');
 
-  var paragraph = document.createElement('p'); // Create a paragraph
-  paragraph.innerHTML = content;
-
-  paragraph.id = __utls.unused_id(section_id + '_'); // Set up a random id
-
-  paragraph.setAttribute('class', 'a-paragraph');
-  section.appendChild(paragraph);
+  $('#' + section_id).append(paragraph);
 }
 
 export function add_subtitle(content, section_id) {
-  var section = __utls.byId(section_id);
+  var subtitle = $('<h3 id="' + __utls.unused_id() + '" class="a-subtitle">' + content + '</h3>');
 
-  var subtitle = document.createElement('h3');
-  subtitle.innerHTML = content;
-
-  subtitle.id = __utls.unused_id(section_id + '_'); // Set up a random id
-
-  subtitle.setAttribute('class', 'a-subtitle');
-  section.appendChild(subtitle);
+  $('#' + section_id).append(subtitle);
 }
 
 export function add_figure(img_name, caption, section_id) {
-  var section = __utls.byId(section_id);
+  var img = $('<img src="' + __cfg.get_img_path() + img_name + '" alt="' + img_name + '">');
+  var fig_cap = $('<figcaption>' + caption + '</figcaption>')
 
-  // Create and set up img tag
-  var img = document.createElement('img');
-  img.src = __cfg.get_img_path() + img_name;
-  img.alt = "There should be this image here: " + img_name;
+  var figure = $('<figure id="' + __utls.unused_id() + '" class="a-figure">');
+  figure.append(img);
+  figure.append(fig_cap);
 
-  // Create and set up figcaption tag
-  var fig_cap = document.createElement('figcaption')
-  fig_cap.innerHTML = caption;
-
-  // Create and set up figure tag
-  var figure = document.createElement('figure');
-  figure.id = __utls.unused_id(section_id + '_'); // Set up a random id
-  figure.setAttribute('class', 'a-figure');
-
-  // Append tags
-  figure.appendChild(img);
-  figure.appendChild(fig_cap);
-  section.appendChild(figure);
+  $('#' + section_id).append(figure);
 }
 
 export function add_blockquote(content, section_id) {
-  var section = __utls.byId(section_id);
+  var quote = $('<blockquote id="' + __utls.unused_id() + '" class="a-blockquote">' + content + '</blockquote>');
 
-  var quote = document.createElement('blockquote'); // Create a blockquote
-  quote.innerHTML = content;
-
-  quote.id = __utls.unused_id(section_id + '_'); // Set up a random id
-
-  quote.setAttribute('class', 'a-blockquote');
-  section.appendChild(quote);
+  $('#' + section_id).append(quote);
 }
 
 /** ARTICLE REFERENCES **/
 
 export function add_reference(ref_id, name, author, src, year, url) {
-  var ref = $('<li>');
-  $(ref).attr('id', ref_id);
-
-  var refs = $('#a-references');
-  $(refs).append(ref);
+  var ref = $('<li id="' + ref_id + '">');
+  $('#a-references').append(ref);
 
   modify_reference(ref_id, name, author, src, year, url);
 }
 
 export function modify_reference(ref_id, name, author, src, year, url) {
-  var ref = __utls.byId(ref_id);
+  var ref = $('#' + ref_id);
 
   var info = [];
 
@@ -167,7 +119,7 @@ export function modify_reference(ref_id, name, author, src, year, url) {
     info.push(year);
   }
 
-  ref.innerHTML = info.join('');
+  ref.prop('innerHTML', info.join(''));
 }
 
 export function remove_reference(ref_id) { $('#' + ref_id).remove(); }

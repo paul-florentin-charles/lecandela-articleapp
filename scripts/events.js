@@ -5,7 +5,7 @@ import * as __api from './modules/api.js'
 /* Ask the user for confirmation when leaving the page (not to lose any data by mistake)
 ** Event is triggered when leaving the page (refreshing or closing it)
 */
-//window.onbeforeunload = function() { return ""; };
+//$(window).on("beforeunload", function() { return ""; });
 
 /* Load several elements in the article preview and reset form values
 ** Event is triggered when loading the page (refreshing or opening it)
