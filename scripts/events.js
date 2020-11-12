@@ -10,26 +10,26 @@ import * as __api from './modules/api.js'
 /* Load several elements in the article preview and reset form values
 ** Event is triggered when loading the page (refreshing or opening it)
 */
-$(window).on("load", function() { __api.init(); });
+$(window).on("load", function() { __api.init('article'); });
 
 /** Metadata **/
 
 // TITLE
-$('#f-title').on("keyup keydown", function() { __api.update_title(); });
+$('#f-title').on("keyup keydown", function() { __api.update_title('f-title'); });
 
 // AUTHOR
-$('#f-author').on("keyup keydown", function() { __api.update_author(); });
+$('#f-author').on("keyup keydown", function() { __api.update_author('f-author'); });
 
 // DATE
-$('#f-date').on("change", function() { __api.update_date(); });
+$('#f-date').on("change", function() { __api.update_date('f-date'); });
 
 /** Section manager **/
 
-$('#f-sctn-lst').on("change", function() { __api.update_section(); }); // LIST
+$('#f-sctn-lst').on("change", function() { __api.update_section('f-sctn-lst', 'f-el', 'f-el-lst'); }); // LIST
 
-$('#f-sctn-add').on("click", function() { __api.add_section(); }); // ADD
-$('#f-sctn-mod').on("click", function() { __api.modify_section(); }); // MODIFY
-$('#f-sctn-rm').on("click", function() { __api.remove_section(); }); // REMOVAL
+$('#f-sctn-add').on("click", function() { __api.add_section('f-sctn-name', 'f-sctn-nbr', 'f-sctn-show-nbr', 'f-sctn-lst', 'f-el', 'f-el-lst'); }); // ADD
+$('#f-sctn-mod').on("click", function() { __api.modify_section('f-sctn-name', 'f-sctn-nbr', 'f-sctn-show-nbr', 'f-sctn-lst', 'f-el', 'f-el-lst'); }); // MODIFY
+$('#f-sctn-rm').on("click", function() { __api.remove_section('f-sctn-lst', 'f-el', 'f-el-lst'); }); // REMOVAL
 
 /** Element manager **/
 

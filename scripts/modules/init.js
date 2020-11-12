@@ -2,9 +2,9 @@
 
 /** Main function **/
 
-export function init_document(article_id, checkboxes_ids = [], inputs_ids = []) {
+export function init_document(article_id) {
   init_article(article_id);
-  init_form(checkboxes_ids, inputs_ids);
+  init_form();
 }
 
 /** Sub-functions **/
@@ -34,14 +34,11 @@ function init_article(article_id) {
   footer.append(references);
 
   // Appending the 3 main sections to article
-  var article = $('#' + article_id);
+  var article = $(`#${article_id}`);
 
   article.append(header);
   article.append(core);
   article.append(footer);
 }
 
-function init_form(checkboxes_ids = [], inputs_ids = []) {
-  for (var id of checkboxes_ids) $("#" + id).prop('checked', true); // Checking all by default
-  for (var id of inputs_ids) $("#" + id).val(null); // Flushing desired inputs
-}
+function init_form() { /* TODO ? */ }

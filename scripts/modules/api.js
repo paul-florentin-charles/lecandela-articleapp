@@ -6,25 +6,19 @@ import * as __cfg from './config.js';
 
 /*** INIT ***/
 
-export function init() { __init.init_document('article', ['f-sctn-show-nbr'], ['f-sctn-nbr']); }
+export function init(article_id) { __init.init_document(article_id); }
 
 /*** UPDATES ***/
 
-export function update_title() {
-  __utls.set_tag_innerHTML('a-meta-title', __utls.get_tag_value('f-title'));
-}
+export function update_title(f_title_id) { __art.set_title(__utls.get_tag_value(f_title_id)); }
 
-export function update_author() {
-  __utls.set_tag_innerHTML('a-meta-author', __utls.get_tag_value('f-author'));
-}
+export function update_author(f_author_id) { __art.set_author(__utls.get_tag_value(f_author_id)); }
 
-export function update_date() {
-  __utls.set_tag_innerHTML('a-meta-date', __utls.get_tag_value('f-date', __utls.date_US_to_EU));
-}
+export function update_date(f_date_id) { __art.set_date(__utls.get_tag_value(f_date_id, __utls.date_US_to_EU)); }
 
-export function update_section() {
-  if (__form.update_section('f-el', 'f-sctn-lst'))  {
-    __form.update_element('f-sctn-lst', 'f-el-lst');
+export function update_section(f_sctn_lst_id, f_el_mng_id, f_el_lst_id) {
+  if (__form.update_section(f_el_mng_id, f_sctn_lst_id))  {
+    __form.update_element(f_sctn_lst_id, f_el_lst_id);
   }
 }
 
@@ -34,29 +28,29 @@ export function update_img_button() {
 
 /*** SECTIONS ***/
 
-export function add_section() {
-  var sctn_info = __form.add_section('f-sctn-name', 'f-sctn-nbr', 'f-sctn-show-nbr', 'f-sctn-lst');
+export function add_section(f_sctn_name_id, f_sctn_nbr_id, f_sctn_show_nbr_id, f_sctn_lst_id, f_el_mng_id, f_el_lst_id) {
+  var sctn_info = __form.add_section(f_sctn_name_id, f_sctn_nbr_id, f_sctn_show_nbr_id, f_sctn_lst_id);
   if (sctn_info) {
     __art.add_section.apply(null, sctn_info);
-    update_section(); // Display list of element corresponding to newly added section
+    update_section(f_sctn_lst_id, f_el_mng_id, f_el_lst_id); // Display list of element corresponding to newly added section
   }
 }
 
-export function remove_section() {
+export function remove_section(f_sctn_lst_id, f_el_mng_id, f_el_lst_id) {
   if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
   var sctn_id = __form.remove_section('f-sctn-lst');
   if (sctn_id) {
     __art.remove_section(sctn_id);
-    update_section(); // Display list of element corresponding to newly selected section
+    update_section(f_sctn_lst_id, f_el_mng_id, f_el_lst_id); // Display list of element corresponding to newly selected section
   }
 }
 
-export function modify_section() {
-  var sctn_new_info = __form.modify_section('f-sctn-name', 'f-sctn-nbr', 'f-sctn-show-nbr', 'f-sctn-lst');
+export function modify_section(f_sctn_name_id, f_sctn_nbr_id, f_sctn_show_nbr_id, f_sctn_lst_id, f_el_mng_id, f_el_lst_id) {
+  var sctn_new_info = __form.modify_section(f_sctn_name_id, f_sctn_nbr_id, f_sctn_show_nbr_id, f_sctn_lst_id);
   if (sctn_new_info) {
     __art.modify_section.apply(null, sctn_new_info);
-    update_section();
+    update_section(f_sctn_lst_id, f_el_mng_id, f_el_lst_id);
   }
 }
 
@@ -139,9 +133,12 @@ export function add_reference() {
   var url = __utls.get_tag_value('f-ref-url');
 
   if (name && src) {
-    var ref_id = 'ref-' + (__utls.get_children_nbr('f-ref-lst') + 1);
+    var ref_id = 'ref-' + ($('#f-ref-lst').children().length + 1);
     __art.add_reference(ref_id, name, author, src, year, url);
-    __form.add_reference(ref_id, name, src);
+    __form.add_reference('f-ref-lst', ref_id, name, src);
+    // Flushing input fields
+    var ids = ['f-ref-name', 'f-ref-author', 'f-ref-src', 'f-ref-year', 'f-ref-url']
+    for (let id of ids) $(`#${id}`).val(null);
   }
 }
 
@@ -152,19 +149,22 @@ export function modify_reference() {
   var year = __utls.get_tag_value('f-ref-year');
   var url = __utls.get_tag_value('f-ref-url');
 
-  if (__utls.get_children_nbr('f-ref-lst') > 0 && name && src) {
+  if ($('#f-ref-lst').children().length > 0 && name && src) {
     __art.modify_reference(__utls.get_selected_item_value('f-ref-lst'), name, author, src, year, url);
-    __form.modify_reference(name, src);
+    __form.modify_reference('f-ref-lst', name, src);
+    // Flushing input fields
+    var ids = ['f-ref-name', 'f-ref-author', 'f-ref-src', 'f-ref-year', 'f-ref-url']
+    for (let id of ids) $(`#${id}`).val(null);
   }
 }
 
 export function remove_reference() {
   if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
-  if (__utls.get_children_nbr('f-ref-lst') > 0) {
+  if ($('#f-ref-lst').children().length > 0) {
     __art.remove_reference(__utls.get_selected_item_value('f-ref-lst'));
-    __form.remove_reference();
-    __form.update_reference();
+    __form.remove_reference('f-ref-lst');
+    __form.update_reference('f-ref-lst');
   }
 }
 
