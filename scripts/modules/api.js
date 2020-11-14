@@ -22,16 +22,14 @@ export function update_section(f_sctn_lst_id, f_el_mng_id, f_el_lst_id) {
   }
 }
 
-export function update_img_button() {
-  __utls.update_img_label('f-el-img');
-}
+export function update_img_button(f_el_img_id) { __utls.update_img_label(f_el_img_id); }
 
 /*** SECTIONS ***/
 
 export function add_section(f_sctn_name_id, f_sctn_nbr_id, f_sctn_show_nbr_id, f_sctn_lst_id, f_el_mng_id, f_el_lst_id) {
   var sctn_info = __form.add_section(f_sctn_name_id, f_sctn_nbr_id, f_sctn_show_nbr_id, f_sctn_lst_id);
   if (sctn_info) {
-    __art.add_section.apply(null, sctn_info);
+    __art.add_section(...sctn_info);
     update_section(f_sctn_lst_id, f_el_mng_id, f_el_lst_id); // Display list of element corresponding to newly added section
   }
 }
@@ -39,64 +37,68 @@ export function add_section(f_sctn_name_id, f_sctn_nbr_id, f_sctn_show_nbr_id, f
 export function remove_section(f_sctn_lst_id, f_el_mng_id, f_el_lst_id) {
   if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
-  var sctn_id = __form.remove_section('f-sctn-lst');
+  var sctn_id = __form.remove_section(f_sctn_lst_id);
   if (sctn_id) {
     __art.remove_section(sctn_id);
     update_section(f_sctn_lst_id, f_el_mng_id, f_el_lst_id); // Display list of element corresponding to newly selected section
   }
 }
 
-export function modify_section(f_sctn_name_id, f_sctn_nbr_id, f_sctn_show_nbr_id, f_sctn_lst_id, f_el_mng_id, f_el_lst_id) {
+export function modify_section(f_sctn_name_id, f_sctn_nbr_id, f_sctn_show_nbr_id, f_sctn_lst_id, f_el_lst_id) {
   var sctn_new_info = __form.modify_section(f_sctn_name_id, f_sctn_nbr_id, f_sctn_show_nbr_id, f_sctn_lst_id);
   if (sctn_new_info) {
-    __art.modify_section.apply(null, sctn_new_info);
-    update_section(f_sctn_lst_id, f_el_mng_id, f_el_lst_id);
+    __art.modify_section(...sctn_new_info);
   }
 }
 
 /*** ELEMENTS ***/
 
-export function add_paragraph() {
-  var content = __utls.get_tag_value('f-el-par');
+export function add_paragraph(f_el_par_id, f_sctn_lst_id, f_el_lst_id) {
+  var content = __utls.get_tag_value(f_el_par_id),
+      sctn_id = __utls.get_selected_item_value(f_sctn_lst_id);
   if (content) {
-    __art.add_paragraph(content, __utls.get_selected_item_value('f-sctn-lst')); // Add paragraph to article
-    __form.update_element('f-sctn-lst', 'f-el-lst'); // Update list of elements
+    __art.add_paragraph(content, sctn_id); // Add paragraph to article
+    __form.update_element(sctn_id, f_el_lst_id); // Update list of elements
   }
 }
 
-export function add_subtitle() {
-  var content = __utls.get_tag_value('f-el-subttl');
+export function add_subtitle(f_el_subttl_id, f_sctn_lst_id, f_el_lst_id) {
+  var content = __utls.get_tag_value(f_el_subttl_id),
+      sctn_id = __utls.get_selected_item_value(f_sctn_lst_id);
   if (content) {
-    __art.add_subtitle(content, __utls.get_selected_item_value('f-sctn-lst')); // Add subtitle to article
-    __form.update_element('f-sctn-lst', 'f-el-lst'); // Update list of elements
+    __art.add_subtitle(content, sctn_id); // Add subtitle to article
+    __form.update_element(sctn_id, f_el_lst_id); // Update list of elements
   }
 }
 
-export function add_figure() {
-  var img_name = __utls.get_finput_fname('f-el-img');
-  var caption = __utls.get_tag_value('f-el-caption');
+export function add_figure(f_el_img_id, f_el_caption_id, f_sctn_lst_id, f_el_lst_id) {
+  var img_name = __utls.get_finput_fname(f_el_img_id),
+      caption = __utls.get_tag_value(f_el_caption_id),
+      sctn_id = __utls.get_selected_item_value(f_sctn_lst_id);
   if (img_name) {
-    __art.add_figure(img_name, caption, __utls.get_selected_item_value('f-sctn-lst')); // Add figure to article
-    __form.update_element('f-sctn-lst', 'f-el-lst'); // Update list of elements
-    update_img_button('f-el-img');
+    __art.add_figure(img_name, caption, sctn_id); // Add figure to article
+    __form.update_element(sctn_id, f_el_lst_id); // Update list of elements
+    update_img_button(f_el_img_id);
   }
 }
 
-export function add_blockquote() {
-  var content = __utls.get_tag_value('f-el-quote');
+export function add_blockquote(f_el_quote_id, f_sctn_lst_id, f_el_lst_id) {
+  var content = __utls.get_tag_value(f_el_quote_id),
+      sctn_id = __utls.get_selected_item_value(f_sctn_lst_id);
   if (content) {
-    __art.add_blockquote(content, __utls.get_selected_item_value('f-sctn-lst')); // Add quote to article
-    __form.update_element('f-sctn-lst', 'f-el-lst'); // Update list of elements
+    __art.add_blockquote(content, sctn_id); // Add quote to article
+    __form.update_element(sctn_id, f_el_lst_id); // Update list of elements
   }
 }
 
-export function remove_element() {
+export function remove_element(f_sctn_lst_id, f_el_lst_id) {
   if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
-  var element_id = __utls.get_selected_item_value('f-el-lst');
+  var element_id = __utls.get_selected_item_value(f_el_lst_id),
+      sctn_id = __utls.get_selected_item_value(f_sctn_lst_id);
   if (element_id) {
     __art.remove_element(element_id);
-    __form.update_element('f-sctn-lst', 'f-el-lst'); // Update list of elements
+    __form.update_element(sctn_id, f_el_lst_id); // Update list of elements
   }
 }
 
@@ -185,12 +187,12 @@ export function export_html() { __utls.save_file(__art.get_article(), __cfg.get_
 
 /*** TAG INSERTION FOR PARAGRAPH ***/
 
-export function add_italic() { __form.add_italic_to_text_input('f-el-par'); }
+export function add_italic(f_el_par_id) { __form.add_italic_to_text_input(f_el_par_id); }
 
-export function add_bold() { __form.add_bold_to_text_input('f-el-par'); }
+export function add_bold(f_el_par_id) { __form.add_bold_to_text_input(f_el_par_id); }
 
-export function add_quote() { __form.add_quote_to_text_input('f-el-par'); }
+export function add_quote(f_el_par_id) { __form.add_quote_to_text_input(f_el_par_id); }
 
-export function add_link() { __form.add_link_to_textarea('f-el-par'); }
+export function add_link(f_el_par_id) { __form.add_link_to_textarea(f_el_par_id); }
 
-export function add_ref() { __form.add_ref_to_textarea('f-el-par'); }
+export function add_ref(f_el_par_id) { __form.add_ref_to_textarea(f_el_par_id); }

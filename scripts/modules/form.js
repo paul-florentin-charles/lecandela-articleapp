@@ -64,7 +64,7 @@ export function modify_section(sctn_name_id, sctn_nbr_id, sctn_show_nbr_id, sctn
   // Creating option with its right attributes
   var option = $(`<option value="${section_new_id}">${new_name}</option>`);
 
-  insert_section(lst, option);
+  lst.prop('selectedIndex', insert_section(lst, option));
 
   $(`#${sctn_name_id}`).val(null); // Flushing name input
 
@@ -72,15 +72,18 @@ export function modify_section(sctn_name_id, sctn_nbr_id, sctn_show_nbr_id, sctn
 }
 
 function insert_section(lst, option) {
-  var inserted = false;
-  for (let opt of lst.children()) {
-    if (get_section_nbr($(opt).val()) > get_section_nbr(option.val())) {
-      $(opt).before(option); // Insert before higher rank option
+  var inserted = false,
+      children = lst.children();
+  for (var idx = 0; idx < children.length; idx++) {
+    if (get_section_nbr($(children[idx]).val()) > get_section_nbr(option.val())) {
+      $(children[idx]).before(option); // Insert before higher rank option
       inserted = true;
       break;
     }
   }
   if (!inserted) lst.append(option); // Insert as last option
+
+  return idx;
 }
 
 export function update_section(f_el_mng_id, f_sctn_lst_id) {
@@ -103,9 +106,7 @@ export function copy_element(el_lst_id) {
   return $(`#${el_id}`);
 }
 
-export function update_element(f_sctn_lst_id, f_el_lst_id) {
-  var s_id = __utls.get_selected_item_value(f_sctn_lst_id);
-
+export function update_element(s_id, f_el_lst_id) {
   // Get list of elements of section 's_id' apart from the first one (which is the title)
   var elements = $(`#${s_id}`).children();
   var el_lst = $(`#${f_el_lst_id}`);

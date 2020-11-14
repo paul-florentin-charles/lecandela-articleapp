@@ -28,31 +28,31 @@ $('#f-date').on("change", function() { __api.update_date('f-date'); });
 $('#f-sctn-lst').on("change", function() { __api.update_section('f-sctn-lst', 'f-el', 'f-el-lst'); }); // LIST
 
 $('#f-sctn-add').on("click", function() { __api.add_section('f-sctn-name', 'f-sctn-nbr', 'f-sctn-show-nbr', 'f-sctn-lst', 'f-el', 'f-el-lst'); }); // ADD
-$('#f-sctn-mod').on("click", function() { __api.modify_section('f-sctn-name', 'f-sctn-nbr', 'f-sctn-show-nbr', 'f-sctn-lst', 'f-el', 'f-el-lst'); }); // MODIFY
+$('#f-sctn-mod').on("click", function() { __api.modify_section('f-sctn-name', 'f-sctn-nbr', 'f-sctn-show-nbr', 'f-sctn-lst', 'f-el-lst'); }); // MODIFY
 $('#f-sctn-rm').on("click", function() { __api.remove_section('f-sctn-lst', 'f-el', 'f-el-lst'); }); // REMOVAL
 
 /** Element manager **/
 
 // Paragraph styling
-$('#f-el-par-it').on("click", function() { __api.add_italic(); }); // ITALIC
-$('#f-el-par-bold').on("click", function() { __api.add_bold(); }); // BOLD
-$('#f-el-par-quote').on("click", function() { __api.add_quote(); }); // QUOTE
-$('#f-el-par-link').on("click", function() { __api.add_link(); }); // LINK
-$('#f-el-par-ref').on("click", function() { __api.add_ref(); }); // REFERENCE
+$('#f-el-par-it').on("click", function() { __api.add_italic('f-el-par'); }); // ITALIC
+$('#f-el-par-bold').on("click", function() { __api.add_bold('f-el-par'); }); // BOLD
+$('#f-el-par-quote').on("click", function() { __api.add_quote('f-el-par'); }); // QUOTE
+$('#f-el-par-link').on("click", function() { __api.add_link('f-el-par'); }); // LINK
+$('#f-el-par-ref').on("click", function() { __api.add_ref('f-el-par'); }); // REFERENCE
 
 // Add elements
-$('#f-el-add-par').on("click", function() { __api.add_paragraph(); }); // PARAGRAPH
+$('#f-el-add-par').on("click", function() { __api.add_paragraph('f-el-par', 'f-sctn-lst', 'f-el-lst'); }); // PARAGRAPH
 
-$('#f-el-add-subttl').on("click", function() { __api.add_subtitle(); }); // SUBTITLE
+$('#f-el-add-subttl').on("click", function() { __api.add_subtitle('f-el-subttl', 'f-sctn-lst', 'f-el-lst'); }); // SUBTITLE
 
-$('#f-el-img').on("change", function() { __api.update_img_button(); }); // IMAGE
-$('#f-el-add-fig').on("click", function() { __api.add_figure(); }); // FIGURE
+$('#f-el-img').on("change", function() { __api.update_img_button('f-el-img'); }); // IMAGE
+$('#f-el-add-fig').on("click", function() { __api.add_figure('f-el-img', 'f-el-caption', 'f-sctn-lst', 'f-el-lst'); }); // FIGURE
 
-$('#f-el-add-quote').on("click", function() { __api.add_blockquote(); }); // BLOCKQUOTE
+$('#f-el-add-quote').on("click", function() { __api.add_blockquote('f-el-quote', 'f-sctn-lst', 'f-el-lst'); }); // BLOCKQUOTE
 
 // Remove/copy elements
+$('#f-el-rm-element').on("click", function() { __api.remove_element('f-sctn-lst', 'f-el-lst'); }); // REMOVAL
 $('#f-el-copy-element').on("click", function() { __api.copy_element_content(); }); // COPY
-$('#f-el-rm-element').on("click", function() { __api.remove_element(); }); // REMOVAL
 
 /** Reference manager **/
 
