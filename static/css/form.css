@@ -31,28 +31,28 @@ h3 {
 
 /* Form header */
 
-#f-header {
+#metadata {
   width: 45%;
   border-style: inset;
   border-width: thin;
   border-radius: 5px;
 }
 
-#f-title {
+#m-title {
   width: 85%;
 }
 
-#f-author {
+#m-author {
   width: 50%;
 }
 
-#f-date {
+#m-date {
   height: 35px;
 }
 
 /* Form section manager */
 
-#f-sctn {
+#section {
   margin-bottom: 0px;
   width: 70%;
   border-style: inset;
@@ -60,21 +60,21 @@ h3 {
   border-radius: 5px;
 }
 
-#f-sctn-nbr {
+#s-nbr {
   width: 12%;
 }
 
-#f-sctn-name {
+#s-name {
   width: 55%;
 }
 
-label[for="f-sctn-show-nbr"] {
+label[for="s-shownbr"] {
   font-size: 0.85em;
 }
 
 /* Form element manager */
 
-#f-el {
+#element {
   margin-bottom: 0px;
   display: none;
   width: 80%;
@@ -83,7 +83,7 @@ label[for="f-sctn-show-nbr"] {
   border-radius: 5px;
 }
 
-#f-el-par {
+#e-par {
   padding-top: 4px;
   text-indent: 8px;
   width: 80%;
@@ -93,24 +93,24 @@ label[for="f-sctn-show-nbr"] {
   border-radius: 5px;
 }
 
-#f-el-par:focus {
+#e-par:focus {
   border-color: rgba(10, 100, 150, 0.8);
   border-width: 2px;
 }
 
-#f-el-subttl {
+#e-subttl {
   width: 50%;
 }
 
-#f-el-caption {
+#e-cap {
   width: 45%;
 }
 
-#f-el-img {
+#e-img {
   display: None;
 }
 
-label[for="f-el-img"] {
+label[for="e-img"] {
   cursor: pointer;
   display: inline-block;
   width: 45%;
@@ -126,17 +126,17 @@ label[for="f-el-img"] {
   padding-top: 10px;
 }
 
-label[for="f-el-img"]:hover {
+label[for="e-img"]:hover {
   background-color: rgba(240, 240, 240, 0.6);
 }
 
-#f-el-quote {
+#e-quote {
   width: 60%;
 }
 
 /* Form reference manager */
 
-#f-ref {
+#reference {
   margin-bottom: 0px;
   width: 75%;
   border-style: inset;
@@ -144,29 +144,29 @@ label[for="f-el-img"]:hover {
   border-radius: 5px;
 }
 
-#f-ref-name {
+#r-name {
   width: 55%;
 }
 
-#f-ref-author {
+#r-author {
   width: 30%;
 }
 
-#f-ref-src {
+#r-src {
   width: 45%;
 }
 
-#f-ref-year {
+#r-year {
   width: 10%;
 }
 
-#f-ref-url {
+#r-url {
   width: 75%;
 }
 
 /* Form exports */
 
-#f-save {
+#save {
   margin-bottom: 0px;
   width: 30%;
   border-style: inset;

@@ -10,57 +10,52 @@ import * as __api from './modules/api.js'
 /* Load several elements in the article preview and reset form values
 ** Event is triggered when loading the page (refreshing or opening it)
 */
-$(window).on("load", function() { __api.init('article'); });
+$(window).on("load", function() { __api.init('#article'); });
 
 /** Metadata **/
 
-// TITLE
-$('#f-title').on("keyup keydown", function() { __api.update_title('f-title'); });
-
-// AUTHOR
-$('#f-author').on("keyup keydown", function() { __api.update_author('f-author'); });
-
-// DATE
-$('#f-date').on("change", function() { __api.update_date('f-date'); });
+$('#m-title').on("keyup keydown", function() { __api.update_title('#m-title'); }); // TITLE
+$('#m-author').on("keyup keydown", function() { __api.update_author('#m-author'); }); // AUTHOR
+$('#m-date').on("change", function() { __api.update_date('#m-date'); }); // DATE
 
 /** Section manager **/
 
-$('#f-sctn-lst').on("change", function() { __api.update_section('f-sctn-lst', 'f-el', 'f-el-lst'); }); // LIST
+$('#s-lst').on("change", function() { __api.update_section('#s-lst', '#element', '#e-lst'); }); // LIST
 
-$('#f-sctn-add').on("click", function() { __api.add_section('f-sctn-name', 'f-sctn-nbr', 'f-sctn-show-nbr', 'f-sctn-lst', 'f-el', 'f-el-lst'); }); // ADD
-$('#f-sctn-mod').on("click", function() { __api.modify_section('f-sctn-name', 'f-sctn-nbr', 'f-sctn-show-nbr', 'f-sctn-lst', 'f-el-lst'); }); // MODIFY
-$('#f-sctn-rm').on("click", function() { __api.remove_section('f-sctn-lst', 'f-el', 'f-el-lst'); }); // REMOVAL
+$('#s-add').on("click", function() { __api.add_section('#s-name', '#s-nbr', '#s-shownbr', '#s-lst', '#element', '#e-lst'); }); // ADD
+$('#s-mod').on("click", function() { __api.modify_section('#s-name', '#s-nbr', '#s-shownbr', '#s-lst', '#e-lst'); }); // MODIFY
+$('#s-rm').on("click", function() { __api.remove_section('#s-lst', '#element', '#e-lst'); }); // REMOVAL
 
 /** Element manager **/
 
 // Paragraph styling
-$('#f-el-par-it').on("click", function() { __api.add_italic('f-el-par'); }); // ITALIC
-$('#f-el-par-bold').on("click", function() { __api.add_bold('f-el-par'); }); // BOLD
-$('#f-el-par-quote').on("click", function() { __api.add_quote('f-el-par'); }); // QUOTE
-$('#f-el-par-link').on("click", function() { __api.add_link('f-el-par'); }); // LINK
-$('#f-el-par-ref').on("click", function() { __api.add_ref('f-el-par'); }); // REFERENCE
+$('#e-par-it').on("click", function() { __api.add_italic('#e-par'); }); // ITALIC
+$('#e-par-bold').on("click", function() { __api.add_bold('#e-par'); }); // BOLD
+$('#e-par-quote').on("click", function() { __api.add_quote('#e-par'); }); // QUOTE
+$('#e-par-link').on("click", function() { __api.add_link('#e-par'); }); // LINK
+$('#e-par-ref').on("click", function() { __api.add_ref('#e-par'); }); // REFERENCE
 
 // Add elements
-$('#f-el-add-par').on("click", function() { __api.add_paragraph('f-el-par', 'f-sctn-lst', 'f-el-lst'); }); // PARAGRAPH
+$('#e-par-add').on("click", function() { __api.add_paragraph('#e-par', '#s-lst', '#e-lst'); }); // PARAGRAPH
 
-$('#f-el-add-subttl').on("click", function() { __api.add_subtitle('f-el-subttl', 'f-sctn-lst', 'f-el-lst'); }); // SUBTITLE
+$('#e-subttl-add').on("click", function() { __api.add_subtitle('#e-subttl', '#s-lst', '#e-lst'); }); // SUBTITLE
 
-$('#f-el-img').on("change", function() { __api.update_img_button('f-el-img'); }); // IMAGE
-$('#f-el-add-fig').on("click", function() { __api.add_figure('f-el-img', 'f-el-caption', 'f-sctn-lst', 'f-el-lst'); }); // FIGURE
+$('#e-img').on("change", function() { __api.update_img_button('#e-img'); }); // IMAGE
+$('#e-fig-add').on("click", function() { __api.add_figure('#e-img', '#e-cap', '#s-lst', '#e-lst'); }); // FIGURE
 
-$('#f-el-add-quote').on("click", function() { __api.add_blockquote('f-el-quote', 'f-sctn-lst', 'f-el-lst'); }); // BLOCKQUOTE
+$('#e-quote-add').on("click", function() { __api.add_blockquote('#e-quote', '#s-lst', '#e-lst'); }); // BLOCKQUOTE
 
 // Remove/copy elements
-$('#f-el-rm-element').on("click", function() { __api.remove_element('f-sctn-lst', 'f-el-lst'); }); // REMOVAL
-$('#f-el-copy-element').on("click", function() { __api.copy_element_content(); }); // COPY
+$('#e-rm').on("click", function() { __api.remove_element('#s-lst', '#e-lst'); }); // REMOVAL
+$('#e-cpy').on("click", function() { __api.copy_element_content('#e-lst', '#e-par', '#e-subttl', '#e-cap', '#e-quote'); }); // COPY
 
 /** Reference manager **/
 
-$('#f-ref-add').on("click", function() {__api.add_reference(); }); // ADD
-$('#f-ref-mod').on("click", function() {__api.modify_reference(); }); // MODIFY
-$('#f-ref-rm').on("click", function() {__api.remove_reference(); }); // REMOVAL
+$('#r-add').on("click", function() {__api.add_reference('#r-lst', '#r-name', '#r-author', '#r-src', '#r-year', '#r-url'); }); // ADD
+$('#r-mod').on("click", function() {__api.modify_reference('#r-lst', '#r-name', '#r-author', '#r-src', '#r-year', '#r-url'); }); // MODIFY
+$('#r-rm').on("click", function() {__api.remove_reference('#r-lst'); }); // REMOVAL
 
 /** Export **/
 
-$('#f-save-html').on("click", function() { __api.export_html(); }); // HTML
-$('#f-save-json').on("click", function() { __api.export_json(); }); // JSON
+$('#save-html').on("click", function() { __api.export_html(); }); // HTML
+$('#save-json').on("click", function() { __api.export_json(); }); // JSON

@@ -6,167 +6,153 @@ import * as __cfg from './config.js';
 
 /*** INIT ***/
 
-export function init(article_id) { __init.init_document(article_id); }
+export function init(jQid_article) { __init.init_document(jQid_article); }
 
 /*** UPDATES ***/
 
-export function update_title(f_title_id) { __art.set_title(__utls.get_tag_value(f_title_id)); }
+export function update_title(jQid_title) { __art.set_title(__utls.get_tag_value(jQid_title)); }
 
-export function update_author(f_author_id) { __art.set_author(__utls.get_tag_value(f_author_id)); }
+export function update_author(jQid_author) { __art.set_author(__utls.get_tag_value(jQid_author)); }
 
-export function update_date(f_date_id) { __art.set_date(__utls.get_tag_value(f_date_id, __utls.date_US_to_EU)); }
+export function update_date(jQid_date) { __art.set_date(__utls.get_tag_value(jQid_date, __utls.date_US_to_EU)); }
 
-export function update_section(f_sctn_lst_id, f_el_mng_id, f_el_lst_id) {
-  if (__form.update_section(f_el_mng_id, f_sctn_lst_id))  {
-    __form.update_element(f_sctn_lst_id, f_el_lst_id);
+export function update_section(jQid_s_lst, jQid_e_mng, jQid_e_lst) {
+  if (__form.update_section(jQid_e_mng, jQid_s_lst))  {
+    __form.update_element(jQid_s_lst, jQid_e_lst);
   }
 }
 
-export function update_img_button(f_el_img_id) { __utls.update_img_label(f_el_img_id); }
+export function update_img_button(jQid_e_img) { __utls.update_img_label(jQid_e_img); }
 
 /*** SECTIONS ***/
 
-export function add_section(f_sctn_name_id, f_sctn_nbr_id, f_sctn_show_nbr_id, f_sctn_lst_id, f_el_mng_id, f_el_lst_id) {
-  var sctn_info = __form.add_section(f_sctn_name_id, f_sctn_nbr_id, f_sctn_show_nbr_id, f_sctn_lst_id);
-  if (sctn_info) {
-    __art.add_section(...sctn_info);
-    update_section(f_sctn_lst_id, f_el_mng_id, f_el_lst_id); // Display list of element corresponding to newly added section
+export function add_section(jQid_s_name, jQid_s_nbr, jQid_s_shownbr, jQid_s_lst, jQid_e_mng, jQid_e_lst) {
+  var s_info = __form.add_section(jQid_s_name, jQid_s_nbr, jQid_s_shownbr, jQid_s_lst);
+  if (s_info) {
+    __art.add_section(...s_info);
+    update_section(jQid_s_lst, jQid_e_mng, jQid_e_lst); // Display list of element corresponding to newly added section
   }
 }
 
-export function remove_section(f_sctn_lst_id, f_el_mng_id, f_el_lst_id) {
+export function remove_section(jQid_s_lst, jQid_e_mng, jQid_e_lst) {
   if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
-  var sctn_id = __form.remove_section(f_sctn_lst_id);
-  if (sctn_id) {
-    __art.remove_section(sctn_id);
-    update_section(f_sctn_lst_id, f_el_mng_id, f_el_lst_id); // Display list of element corresponding to newly selected section
+  var sec = __form.remove_section(jQid_s_lst);
+  if (sec) {
+    __art.remove_section(sec);
+    update_section(jQid_s_lst, jQid_e_mng, jQid_e_lst); // Display list of element corresponding to newly selected section
   }
 }
 
-export function modify_section(f_sctn_name_id, f_sctn_nbr_id, f_sctn_show_nbr_id, f_sctn_lst_id, f_el_lst_id) {
-  var sctn_new_info = __form.modify_section(f_sctn_name_id, f_sctn_nbr_id, f_sctn_show_nbr_id, f_sctn_lst_id);
-  if (sctn_new_info) {
-    __art.modify_section(...sctn_new_info);
+export function modify_section(jQid_s_name, jQid_s_nbr, jQid_s_show_nbr, jQid_s_lst, jQid_e_lst) {
+  var s_new_info = __form.modify_section(jQid_s_name, jQid_s_nbr, jQid_s_show_nbr, jQid_s_lst);
+  if (s_new_info) {
+    __art.modify_section(...s_new_info);
   }
 }
 
-/*** ELEMENTS ***/
+/*** elementS ***/
 
-export function add_paragraph(f_el_par_id, f_sctn_lst_id, f_el_lst_id) {
-  var content = __utls.get_tag_value(f_el_par_id),
-      sctn_id = __utls.get_selected_item_value(f_sctn_lst_id);
+export function add_paragraph(jQid_e_par, jQid_s_lst, jQid_e_lst) {
+  var content = __utls.get_tag_value(jQid_e_par),
+      s = __utls.get_selected_item_value(jQid_s_lst);
   if (content) {
-    __art.add_paragraph(content, sctn_id); // Add paragraph to article
-    __form.update_element(sctn_id, f_el_lst_id); // Update list of elements
+    __art.add_paragraph(content, s); // Add paragraph to article
+    __form.update_element(s, jQid_e_lst); // Update list of elements
   }
 }
 
-export function add_subtitle(f_el_subttl_id, f_sctn_lst_id, f_el_lst_id) {
-  var content = __utls.get_tag_value(f_el_subttl_id),
-      sctn_id = __utls.get_selected_item_value(f_sctn_lst_id);
+export function add_subtitle(jQid_e_subttl, jQid_s_lst, jQid_e_lst) {
+  var content = __utls.get_tag_value(jQid_e_subttl),
+      s = __utls.get_selected_item_value(jQid_s_lst);
   if (content) {
-    __art.add_subtitle(content, sctn_id); // Add subtitle to article
-    __form.update_element(sctn_id, f_el_lst_id); // Update list of elements
+    __art.add_subtitle(content, s); // Add subtitle to article
+    __form.update_element(s, jQid_e_lst); // Update list of elements
   }
 }
 
-export function add_figure(f_el_img_id, f_el_caption_id, f_sctn_lst_id, f_el_lst_id) {
-  var img_name = __utls.get_finput_fname(f_el_img_id),
-      caption = __utls.get_tag_value(f_el_caption_id),
-      sctn_id = __utls.get_selected_item_value(f_sctn_lst_id);
+export function add_figure(jQid_e_img, jQid_e_cap, jQid_s_lst, jQid_e_lst) {
+  var img_name = __utls.get_finput_fname(jQid_e_img),
+      caption = __utls.get_tag_value(jQid_e_cap),
+      s = __utls.get_selected_item_value(jQid_s_lst);
   if (img_name) {
-    __art.add_figure(img_name, caption, sctn_id); // Add figure to article
-    __form.update_element(sctn_id, f_el_lst_id); // Update list of elements
-    update_img_button(f_el_img_id);
+    __art.add_figure(img_name, caption, s); // Add figure to article
+    __form.update_element(s, jQid_e_lst); // Update list of elements
+    update_img_button(jQid_e_img);
   }
 }
 
-export function add_blockquote(f_el_quote_id, f_sctn_lst_id, f_el_lst_id) {
-  var content = __utls.get_tag_value(f_el_quote_id),
-      sctn_id = __utls.get_selected_item_value(f_sctn_lst_id);
+export function add_blockquote(jQid_e_quote, jQid_s_lst, jQid_e_lst) {
+  var content = __utls.get_tag_value(jQid_e_quote),
+      s = __utls.get_selected_item_value(jQid_s_lst);
   if (content) {
-    __art.add_blockquote(content, sctn_id); // Add quote to article
-    __form.update_element(sctn_id, f_el_lst_id); // Update list of elements
+    __art.add_blockquote(content, s); // Add quote to article
+    __form.update_element(s, jQid_e_lst); // Update list of elements
   }
 }
 
-export function remove_element(f_sctn_lst_id, f_el_lst_id) {
+export function remove_element(jQid_s_lst, jQid_e_lst) {
   if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
-  var element_id = __utls.get_selected_item_value(f_el_lst_id),
-      sctn_id = __utls.get_selected_item_value(f_sctn_lst_id);
-  if (element_id) {
-    __art.remove_element(element_id);
-    __form.update_element(sctn_id, f_el_lst_id); // Update list of elements
+  var element = __utls.get_selected_item_value(jQid_e_lst),
+      s = __utls.get_selected_item_value(jQid_s_lst);
+  if (element) {
+    __art.remove_element(element);
+    __form.update_element(s, jQid_e_lst); // Update list of elements
   }
 }
 
-export function copy_element_content() {
-  var element = __form.copy_element('f-el-lst');
-  if (element.length) {
-    switch (element.prop('class')) {
-      case 'a-paragraph':
-        __utls.set_tag_value('f-el-par', element.html());
-        break;
-      case 'a-subtitle':
-        __utls.set_tag_value('f-el-subttl', element.html());
-        break;
-      case 'a-figure':
-        __utls.set_tag_value('f-el-caption', $(element.children()[1]).html());
-        break;
-      case 'a-blockquote':
-        __utls.set_tag_value('f-el-quote', element.html());
-        break;
-      default:
-        alert("Unknown element !");
-        break;
-    }
+export function copy_element_content(jQid_e_lst, jQid_e_par, jQid_e_subttl, jQid_e_caption, jQid_e_quote) {
+  var jQid_element = __form.copy_element(jQid_e_lst);
+  if ($(jQid_element).length) {
+    __art.copy_element(jQid_element, jQid_e_par, jQid_e_subttl, jQid_e_caption, jQid_e_quote);
   }
 }
 
 /*** REFERENCES ***/
 
-export function add_reference() {
-  var name = __utls.get_tag_value('f-ref-name');
-  var author = __utls.get_tag_value('f-ref-author');
-  var src = __utls.get_tag_value('f-ref-src');
-  var year = __utls.get_tag_value('f-ref-year');
-  var url = __utls.get_tag_value('f-ref-url');
+export function add_reference(jQid_r_lst, jQid_r_name, jQid_r_auth, jQid_r_src, jQid_r_year, jQid_r_url) {
+  var name = __utls.get_tag_value(jQid_r_name);
+  var author = __utls.get_tag_value(jQid_r_auth);
+  var src = __utls.get_tag_value(jQid_r_src);
+  var year = __utls.get_tag_value(jQid_r_year);
+  var url = __utls.get_tag_value(jQid_r_url);
 
   if (name && src) {
-    var ref_id = 'ref-' + ($('#f-ref-lst').children().length + 1);
-    __art.add_reference(ref_id, name, author, src, year, url);
-    __form.add_reference('f-ref-lst', ref_id, name, src);
-    // Flushing input fields
-    var ids = ['f-ref-name', 'f-ref-author', 'f-ref-src', 'f-ref-year', 'f-ref-url']
-    for (let id of ids) $(`#${id}`).val(null);
+    var jQid_reference = '#ref-' + ($(jQid_r_lst).children().length + 1);
+    __art.add_reference(jQid_reference, name, author, src, year, url);
+    __form.add_reference(jQid_r_lst, jQid_reference, name, src);
+
+    $.each([jQid_r_name, jQid_r_auth, jQid_r_src, jQid_r_year, jQid_r_url], function(idx, value) {
+      $(value).val(null);
+    });
   }
 }
 
-export function modify_reference() {
-  var name = __utls.get_tag_value('f-ref-name');
-  var author = __utls.get_tag_value('f-ref-author');
-  var src = __utls.get_tag_value('f-ref-src');
-  var year = __utls.get_tag_value('f-ref-year');
-  var url = __utls.get_tag_value('f-ref-url');
+export function modify_reference(jQid_r_lst, jQid_r_name, jQid_r_auth, jQid_r_src, jQid_r_year, jQid_r_url) {
+  var name = __utls.get_tag_value(jQid_r_name);
+  var author = __utls.get_tag_value(jQid_r_auth);
+  var src = __utls.get_tag_value(jQid_r_src);
+  var year = __utls.get_tag_value(jQid_r_year);
+  var url = __utls.get_tag_value(jQid_r_url);
 
-  if ($('#f-ref-lst').children().length > 0 && name && src) {
-    __art.modify_reference(__utls.get_selected_item_value('f-ref-lst'), name, author, src, year, url);
-    __form.modify_reference('f-ref-lst', name, src);
-    // Flushing input fields
-    var ids = ['f-ref-name', 'f-ref-author', 'f-ref-src', 'f-ref-year', 'f-ref-url']
-    for (let id of ids) $(`#${id}`).val(null);
+  if ($(jQid_r_lst).children().length && name && src) {
+    __art.modify_reference(__utls.get_selected_item_value(jQid_r_lst), name, author, src, year, url);
+    __form.modify_reference(jQid_r_lst, name, src);
+
+    $.each([jQid_r_name, jQid_r_auth, jQid_r_src, jQid_r_year, jQid_r_url], function(idx, value) {
+      $(value).val(null);
+    });
   }
 }
 
-export function remove_reference() {
+export function remove_reference(jQid_r_lst) {
   if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
-  if ($('#f-ref-lst').children().length > 0) {
-    __art.remove_reference(__utls.get_selected_item_value('f-ref-lst'));
-    __form.remove_reference('f-ref-lst');
-    __form.update_reference('f-ref-lst');
+  if ($(jQid_r_lst).children().length) {
+    __art.remove_reference(__utls.get_selected_item_value(jQid_r_lst));
+    __form.remove_reference(jQid_r_lst);
+    __form.update_reference(jQid_r_lst);
   }
 }
 
@@ -187,12 +173,12 @@ export function export_html() { __utls.save_file(__art.get_article(), __cfg.get_
 
 /*** TAG INSERTION FOR PARAGRAPH ***/
 
-export function add_italic(f_el_par_id) { __form.add_italic_to_text_input(f_el_par_id); }
+export function add_italic(jQid_e_par) { __form.add_italic_to_text_input(jQid_e_par); }
 
-export function add_bold(f_el_par_id) { __form.add_bold_to_text_input(f_el_par_id); }
+export function add_bold(jQid_e_par) { __form.add_bold_to_text_input(jQid_e_par); }
 
-export function add_quote(f_el_par_id) { __form.add_quote_to_text_input(f_el_par_id); }
+export function add_quote(jQid_e_par) { __form.add_quote_to_text_input(jQid_e_par); }
 
-export function add_link(f_el_par_id) { __form.add_link_to_textarea(f_el_par_id); }
+export function add_link(jQid_e_par) { __form.add_link_to_textarea(jQid_e_par); }
 
-export function add_ref(f_el_par_id) { __form.add_ref_to_textarea(f_el_par_id); }
+export function add_ref(jQid_e_par) { __form.add_ref_to_textarea(jQid_e_par); }
