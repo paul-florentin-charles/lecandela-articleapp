@@ -11,16 +11,16 @@ export function init_document(jQid_article) {
 
 function init_article(jQid_article) {
   // Creating the 3 main sections of article (header, core and footer)
-  var header = $('<div id="a-header">');
-  var core = $('<div id="a-core">');
-  var footer = $('<div id="a-footer">');
+  var header = $('<div id="a-header">'),
+      core = $('<div id="a-core">'),
+      footer = $('<div id="a-footer">');
 
   // Header init
   var metadata = $('<ul id="a-metadata">');
 
-  var title = $('<li id="a-meta-title">');
-  var author = $('<li id="a-meta-author">');
-  var date = $('<li id="a-meta-date">');
+  var title = $('<li id="a-meta-title">'),
+      author = $('<li id="a-meta-author">'),
+      date = $('<li id="a-meta-date">');
   metadata.append(title, author, date);
 
   header.append(metadata);

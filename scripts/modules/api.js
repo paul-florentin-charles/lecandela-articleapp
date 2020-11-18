@@ -10,14 +10,14 @@ export function init(jQid_article) { __init.init_document(jQid_article); }
 
 /*** UPDATES ***/
 
-export function update_title(jQid_title) { __art.set_title(__utls.get_tag_value(jQid_title)); }
+export function update_title(jQid_title) { __art.set_title(jQid_title); }
 
-export function update_author(jQid_author) { __art.set_author(__utls.get_tag_value(jQid_author)); }
+export function update_author(jQid_author) { __art.set_author(jQid_author); }
 
-export function update_date(jQid_date) { __art.set_date(__utls.get_tag_value(jQid_date, __utls.date_US_to_EU)); }
+export function update_date(jQid_date) { __art.set_date(jQid_date); }
 
 export function update_section(jQid_s_lst, jQid_e_mng, jQid_e_lst) {
-  if (__form.update_section(jQid_e_mng, jQid_s_lst))  {
+  if (__form.update_section(jQid_e_mng, jQid_s_lst)) {
     __form.update_element(jQid_s_lst, jQid_e_lst);
   }
 }

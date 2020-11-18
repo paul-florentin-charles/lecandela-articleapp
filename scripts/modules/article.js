@@ -21,11 +21,11 @@ export function get_article() {
 
 /** SETTERS **/
 
-export function set_title(value) { __utls.set_tag_innerHTML('#a-meta-title', value); }
+export function set_title(jQid_title) { $('#a-meta-title').html($(jQid_title).val()); }
 
-export function set_author(value) { __utls.set_tag_innerHTML('#a-meta-author', value); }
+export function set_author(jQid_author) { $('#a-meta-author').html($(jQid_author).val()); }
 
-export function set_date(value) { __utls.set_tag_innerHTML('#a-meta-date', value); }
+export function set_date(jQid_date) { $('#a-meta-date').html(__utls.date_US_to_EU($(jQid_date).val())); }
 
 /** ARTICLE SECTIONS **/
 

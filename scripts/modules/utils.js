@@ -86,7 +86,7 @@ export function update_img_label(jQid_img, label_idx = 0) {
   var img = $(jQid_img);
 
   var label = $(img.prop('labels')[label_idx]);
-  label.html(img.prop('files')[0] ? img.prop('files')[0].name : "Déposer une image");
+  label.html(img.prop('files').length ? img.prop('files')[0].name : "Déposer une image");
 }
 
 /* Dictionaries */
