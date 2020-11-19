@@ -17,7 +17,7 @@ export function update_author(jQid_author) { __art.set_author(jQid_author); }
 export function update_date(jQid_date) { __art.set_date(jQid_date); }
 
 export function update_section(jQid_s_lst, jQid_e_mng, jQid_e_lst) {
-  if (__form.update_section(jQid_e_mng, jQid_s_lst)) {
+  if (__form.update_section(jQid_s_lst, jQid_e_mng)) {
     __form.update_element(jQid_s_lst, jQid_e_lst);
   }
 }
@@ -58,7 +58,7 @@ export function add_paragraph(jQid_e_par, jQid_s_lst, jQid_e_lst) {
       s = __utls.get_selected_item_value(jQid_s_lst);
   if (content) {
     __art.add_paragraph(content, s); // Add paragraph to article
-    __form.update_element(s, jQid_e_lst); // Update list of elements
+    __form.update_element(jQid_s_lst, jQid_e_lst); // Update list of elements
   }
 }
 
@@ -67,7 +67,7 @@ export function add_subtitle(jQid_e_subttl, jQid_s_lst, jQid_e_lst) {
       s = __utls.get_selected_item_value(jQid_s_lst);
   if (content) {
     __art.add_subtitle(content, s); // Add subtitle to article
-    __form.update_element(s, jQid_e_lst); // Update list of elements
+    __form.update_element(jQid_s_lst, jQid_e_lst); // Update list of elements
   }
 }
 
@@ -77,7 +77,7 @@ export function add_figure(jQid_e_img, jQid_e_cap, jQid_s_lst, jQid_e_lst) {
       s = __utls.get_selected_item_value(jQid_s_lst);
   if (img_name) {
     __art.add_figure(img_name, caption, s); // Add figure to article
-    __form.update_element(s, jQid_e_lst); // Update list of elements
+    __form.update_element(jQid_s_lst, jQid_e_lst); // Update list of elements
     update_img_button(jQid_e_img);
   }
 }
@@ -87,18 +87,17 @@ export function add_blockquote(jQid_e_quote, jQid_s_lst, jQid_e_lst) {
       s = __utls.get_selected_item_value(jQid_s_lst);
   if (content) {
     __art.add_blockquote(content, s); // Add quote to article
-    __form.update_element(s, jQid_e_lst); // Update list of elements
+    __form.update_element(jQid_s_lst, jQid_e_lst); // Update list of elements
   }
 }
 
 export function remove_element(jQid_s_lst, jQid_e_lst) {
   if (confirm("This cannot be undone, are you sure ?") == 0) return 0;
 
-  var element = __utls.get_selected_item_value(jQid_e_lst),
-      s = __utls.get_selected_item_value(jQid_s_lst);
+  var element = __utls.get_selected_item_value(jQid_e_lst);
   if (element) {
     __art.remove_element(element);
-    __form.update_element(s, jQid_e_lst); // Update list of elements
+    __form.update_element(jQid_s_lst, jQid_e_lst); // Update list of elements
   }
 }
 

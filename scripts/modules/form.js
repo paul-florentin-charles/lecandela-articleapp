@@ -2,7 +2,7 @@ import * as __utls from './utils.js';
 
 /** GETTERS **/
 
-function get_section_nbr(jQid_section) { return __utls.str_to_int(jQid_section, 4); }
+function get_section_nbr(jQid_section) { return __utls.str_to_int(jQid_section, 3); }
 
 /** SECTION MANAGER **/
 
@@ -21,8 +21,8 @@ export function remove_section(jQid_s_lst) {
 }
 
 export function add_section(jQid_s_name, jQid_s_nbr, jQid_s_shownbr, jQid_s_lst) {
-  var name = $(jQid_s_name).val();
-  var nbr = $(jQid_s_nbr).val();
+  var name = $(jQid_s_name).val(),
+      nbr = $(jQid_s_nbr).val();
 
   if (!name || !nbr || isNaN(nbr) || parseInt(nbr) < 0) return null; // Fields incomplete or incorrectly filled
 
@@ -35,7 +35,7 @@ export function add_section(jQid_s_name, jQid_s_nbr, jQid_s_shownbr, jQid_s_lst)
   var lst = $(jQid_s_lst); // Getting list of sections
   var option = $(`<option value="${jQid_section}">${name}</option>`); // Creating option with its right attributes
 
-  insert_section(lst, option);
+  lst.prop('selectedIndex', insert_section(lst, option));
 
   $(jQid_s_name).val(null); // Flushing name input
   $(jQid_s_nbr).val(parseInt(nbr) + 1); // Setting next value ready for section number
@@ -44,8 +44,8 @@ export function add_section(jQid_s_name, jQid_s_nbr, jQid_s_shownbr, jQid_s_lst)
 }
 
 export function modify_section(jQid_s_name, jQid_s_nbr, jQid_s_show_nbr, jQid_s_lst) {
-  var lst = $(jQid_s_lst);
-  var idx = lst.prop('selectedIndex');
+  var lst = $(jQid_s_lst),
+      idx = lst.prop('selectedIndex');
 
   if (idx == -1) return null;
 
@@ -73,9 +73,8 @@ export function modify_section(jQid_s_name, jQid_s_nbr, jQid_s_show_nbr, jQid_s_
 }
 
 function insert_section(lst, option) {
-  var children = lst.children(),
-      lth = children.length;
-  for (let idx = 0; idx < lth; idx++) {
+  var children = lst.children();
+  for (var idx = 0; idx < children.length; idx++) {
     if (get_section_nbr($(children[idx]).val()) > get_section_nbr(option.val())) {
       $(children[idx]).before(option); // Insert before higher rank option
       return idx;
@@ -83,10 +82,10 @@ function insert_section(lst, option) {
   }
   lst.append(option); // Insert as last option
 
-  return lth;
+  return idx;
 }
 
-export function update_section(jQid_e_mng, jQid_s_lst) {
+export function update_section(jQid_s_lst, jQid_e_mng) {
   var no_section = ($(jQid_s_lst).prop('selectedIndex') == -1);
   $(jQid_e_mng).css('display', no_section ? 'none' : 'block');
 
@@ -106,9 +105,11 @@ export function copy_element(jQid_e_lst) {
   return jQid_element;
 }
 
-export function update_element(jQid_section, jQid_e_lst) {
+export function update_element(jQid_s_lst, jQid_e_lst) {
   var e_lst = $(jQid_e_lst);
   e_lst.prop('length', 0); // Purge element list
+
+  var jQid_section = __utls.get_selected_item_value(jQid_s_lst);
 
   $(jQid_section).children().slice(1).each(function(idx) {
     var option = $(`<option value="#${$(this).attr('id')}">`);
